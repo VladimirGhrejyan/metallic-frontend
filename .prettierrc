@@ -1,0 +1,19 @@
+{
+    "semi": true,
+    "tabWidth": 4,
+    "printWidth": 100,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "plugins": ["@trivago/prettier-plugin-sort-imports"],
+    "importOrder": [
+        "^~/app/(.*)$",
+        "^~/pages/(.*)$",
+        "^~/widgets/(.*)$",
+        "^~/features/(.*)$",
+        "^~/entities/(.*)$",
+        "^~/shared/(.*)$",
+        "^[./]"
+    ],
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true
+}
