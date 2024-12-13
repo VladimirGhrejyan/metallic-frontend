@@ -1,14 +1,11 @@
-import react from '@vitejs/plugin-react';
-import { defineConfig } from 'vite';
-import checker from 'vite-plugin-checker';
-import tsconfigPaths from 'vite-tsconfig-paths';
+import { UserConfigFnObject, defineConfig } from 'vite';
 
-export default defineConfig({
-    plugins: [
-        react(),
-        tsconfigPaths(),
-        checker({
-            typescript: { tsconfigPath: 'tsconfig.app.json' },
-        }),
-    ],
-});
+import { ENV_PREFIX } from './config/build/constants';
+import { buildPlugins } from './config/build/plugins';
+
+export default defineConfig(() => {
+    return {
+        plugins: buildPlugins(),
+        envPrefix: ENV_PREFIX,
+    };
+}) satisfies UserConfigFnObject;
