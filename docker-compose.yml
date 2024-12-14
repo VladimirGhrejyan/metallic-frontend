@@ -1,0 +1,19 @@
+services:
+  app:
+    pull_policy: never
+
+    container_name: metallic-prod
+
+    image: metallic-prod:latest
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    ports:
+      - "8080:8080"
+
+    restart: always
+
+    volumes:
+      - "./config/nginx/nginx.conf://etc/nginx/nginx.conf:ro"

@@ -11,6 +11,8 @@
         "build": "tsc -b && vite build",
         "lint": "eslint .",
         "preview": "vite preview",
+        "docker-up:prod": "docker-compose -f docker-compose.yml up",
+        "docker-down:prod": "docker-compose -f docker-compose.yml down",
         "format:lint": "pnpm exec prettier . --check",
         "format:fix": "pnpm exec prettier . --write",
         "prepare": "husky"

@@ -2,6 +2,7 @@
 
 interface ImportMetaEnv {
     readonly APP_TITLE: string;
+    readonly APP_PORT: number;
 }
 
 interface ImportMeta {
