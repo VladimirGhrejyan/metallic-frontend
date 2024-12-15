@@ -1,5 +1,7 @@
 import { FC } from 'react';
 
+import { RouterProvider } from './providers/router';
+
 export const App: FC = () => {
-    return <h1>{import.meta.env.APP_TITLE}</h1>;
+    return <RouterProvider />;
 };
