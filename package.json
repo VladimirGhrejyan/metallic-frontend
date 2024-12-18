@@ -11,6 +11,7 @@
         "build": "tsc -b && vite build",
         "lint": "eslint .",
         "preview": "vite preview",
+        "rtk:codegen": "npx @rtk-query/codegen-openapi openapi.config.cjs",
         "docker-up:prod": "docker-compose -f docker-compose.yml up",
         "docker-down:prod": "docker-compose -f docker-compose.yml down",
         "format:lint": "pnpm exec prettier . --check",
