@@ -1,27 +1,41 @@
-import { Link, Outlet } from '@tanstack/react-router';
+import MenuIcon from '@mui/icons-material/Menu';
+import { AppBar, Box, IconButton, Toolbar, Typography, useMediaQuery } from '@mui/material';
+import { Outlet } from '@tanstack/react-router';
+import { useState } from 'react';
+import { Sidebar } from 'src/widgets/sidebar';
 
 export const RootLayout = () => {
+    const isLargeScreen = useMediaQuery((theme) => theme.breakpoints.up('md'));
+
+    const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
+
+    const toggleDrawer = () => {
+        setDrawerOpen((prev) => !prev);
+    };
+
     return (
-        <>
-            <h1>{import.meta.env.APP_TITLE}</h1>
-            <ul>
-                <li>
-                    <Link to="/sign-in" children={'Sign In'} />
-                </li>
+        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+            <AppBar position="static">
+                <Toolbar>
+                    {!isLargeScreen && (
+                        <IconButton
+                            onClick={toggleDrawer}
+                            edge="start"
+                            color="inherit"
+                            aria-label="menu"
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                    )}
+                    <Typography variant="h6" sx={{ flexGrow: 1 }}></Typography>
+                </Toolbar>
+            </AppBar>
 
-                <li>
-                    <Link to="/sign-up" children={'Sign Up'} />
-                </li>
+            {!isLargeScreen && <Sidebar open={drawerOpen} onClose={toggleDrawer} />}
 
-                <li>
-                    <Link to="/" children={'Home'} />
-                </li>
-
-                <li>
-                    <Link to="/admin" children={'Admin'} />
-                </li>
-            </ul>
-            <Outlet />
-        </>
+            <Box component="main" sx={{ flex: 1, p: 2 }}>
+                <Outlet />
+            </Box>
+        </Box>
     );
 };

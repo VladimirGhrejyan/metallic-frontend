@@ -19,5 +19,5 @@ export type GetMeApiResponse = /** status 200  */ GetMeOutputDto;
 export type GetMeApiArg = void;
 export type GetMeOutputDto = {
     id: number;
-    username: string;
+    email: string;
 };

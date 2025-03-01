@@ -39,13 +39,13 @@ export type SignInOutputDto = {
     access_token: string;
 };
 export type SignInInputDto = {
-    username: string;
+    email: string;
     password: string;
 };
 export type SignUpOutputDto = {
     access_token: string;
 };
 export type SignUpInputDto = {
-    username: string;
+    email: string;
     password: string;
 };

@@ -1,3 +1,5 @@
+import { SignUpForm } from '~features/sign-up/ui/sign-up-form.tsx';
+
 export const SignUpPage = () => {
-    return <h1>Sign Up</h1>;
+    return <SignUpForm />;
 };

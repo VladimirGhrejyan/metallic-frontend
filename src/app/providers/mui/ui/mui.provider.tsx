@@ -1,7 +1,8 @@
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import { FC, ReactNode } from 'react';
-import { muiTheme } from '~app/providers/mui/config/mui.theme';
+
+import { muiTheme } from '../config/mui.theme';
 
 interface IProps {
     children: ReactNode;
