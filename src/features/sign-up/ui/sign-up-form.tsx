@@ -1,6 +1,7 @@
 import { Box, Button, Container, Grid2, Typography } from '@mui/material';
 import { FC } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import { useSignUpMutation } from '~entities/auth';
 import { InputController } from '~shared/ui/controllers/input-controller';
 
 import { SignUpFormValues } from '../model/form.types';
@@ -13,8 +14,10 @@ export const SignUpForm: FC = () => {
         },
     });
 
-    const onSubmit: SubmitHandler<SignUpFormValues> = (_) => {
-        // initiate request
+    const [signUp, { isLoading }] = useSignUpMutation();
+
+    const onSubmit: SubmitHandler<SignUpFormValues> = (formValues) => {
+        signUp({ signUpInputDto: formValues });
     };
 
     return (
@@ -35,42 +38,43 @@ export const SignUpForm: FC = () => {
                 </Typography>
 
                 <FormProvider {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)}>
-                        <Box component="form" sx={{ mt: 2, width: '100%' }}>
-                            <Grid2 container spacing={2}>
-                                <Grid2 size={{ xs: 12, sm: 6 }}>
-                                    <InputController
-                                        fullWidth
-                                        required
-                                        name={'username'}
-                                        label="Username"
-                                        variant="outlined"
-                                    />
-                                </Grid2>
-
-                                <Grid2 size={{ xs: 12, sm: 6 }}>
-                                    <InputController
-                                        fullWidth
-                                        required
-                                        label="Password"
-                                        variant="outlined"
-                                        name={'password'}
-                                        type="password"
-                                    />
-                                </Grid2>
+                    <Box
+                        component="form"
+                        sx={{ mt: 2, width: '100%' }}
+                        onSubmit={form.handleSubmit(onSubmit)}
+                    >
+                        <Grid2 container spacing={2}>
+                            <Grid2 size={{ xs: 12, sm: 6 }}>
+                                <InputController
+                                    fullWidth
+                                    name={'email'}
+                                    label="Username"
+                                    variant="outlined"
+                                />
                             </Grid2>
 
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                fullWidth
-                                sx={{ mt: 3, mb: 2 }}
-                                type={'submit'}
-                            >
-                                Sign Up
-                            </Button>
-                        </Box>
-                    </form>
+                            <Grid2 size={{ xs: 12, sm: 6 }}>
+                                <InputController
+                                    fullWidth
+                                    label="Password"
+                                    variant="outlined"
+                                    name={'password'}
+                                    type="password"
+                                />
+                            </Grid2>
+                        </Grid2>
+
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            fullWidth
+                            sx={{ mt: 3, mb: 2 }}
+                            type={'submit'}
+                            disabled={isLoading}
+                        >
+                            Sign Up
+                        </Button>
+                    </Box>
                 </FormProvider>
             </Box>
         </Container>
