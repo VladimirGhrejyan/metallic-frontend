@@ -5,22 +5,22 @@ import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { InputController } from '~shared/ui/controllers/input-controller';
 import { MuiCustomLink } from '~shared/ui/overrides/mui-link';
 
-import { signUpFormConstants } from '../model/form.constants';
-import { signUpSchema } from '../model/form.schema';
-import { SignUpFormValues } from '../model/form.types';
+import { signInFormConstants } from '../model/form.constants';
+import { signInSchema } from '../model/form.schema';
+import { SignInFormValues } from '../model/form.types';
 
-const { SIGN_IN, SIGN_UP, REGISTERED } = signUpFormConstants.TEXTS;
+const { SIGN_IN, SIGN_UP, NOT_REGISTERED } = signInFormConstants.TEXTS;
 
-export const SignUpForm: FC = () => {
-    const form = useForm<SignUpFormValues>({
+export const SignInForm: FC = () => {
+    const form = useForm<SignInFormValues>({
         defaultValues: {
             email: '',
             password: '',
         },
-        resolver: zodResolver(signUpSchema),
+        resolver: zodResolver(signInSchema),
     });
 
-    const onSubmit: SubmitHandler<SignUpFormValues> = (formValues) => {
+    const onSubmit: SubmitHandler<SignInFormValues> = (formValues) => {
         // TODO remove log
         console.log(formValues);
     };
@@ -39,7 +39,7 @@ export const SignUpForm: FC = () => {
                 }}
             >
                 <Typography variant="h5" component="h1" gutterBottom>
-                    {SIGN_UP}
+                    {SIGN_IN}
                 </Typography>
 
                 <FormProvider {...form}>
@@ -76,15 +76,15 @@ export const SignUpForm: FC = () => {
                             sx={{ mt: 3, mb: 2 }}
                             type={'submit'}
                         >
-                            {SIGN_UP}
+                            {SIGN_IN}
                         </Button>
                     </Box>
                 </FormProvider>
 
                 <Box sx={{ display: 'flex', gap: 1 }}>
-                    <Typography component="p">{REGISTERED}</Typography>
-                    <MuiCustomLink to="/sign-in" sx={{ textDecoration: 'none' }}>
-                        {SIGN_IN}
+                    <Typography component="p">{NOT_REGISTERED}</Typography>
+                    <MuiCustomLink to="/sign-up" sx={{ textDecoration: 'none' }}>
+                        {SIGN_UP}
                     </MuiCustomLink>
                 </Box>
             </Box>
