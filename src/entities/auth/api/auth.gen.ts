@@ -1,4 +1,4 @@
-import { api } from '/home/vladimir/Desktop/projects/metallic-fe/src/shared/config/api';
+import { api } from '/Users/surenstepanyan/Desktop/DEVELOPMENT/METALIC PROJECT/metallic-frontend/src/shared/config/api';
 
 export const addTagTypes = ['auth'] as const;
 const injectedRtkApi = api
