@@ -1,9 +1,9 @@
 import { createRoute, lazyRouteComponent } from '@tanstack/react-router';
 
-import { rootRoute } from '../root.route';
+import { unauthenticatedLayoutRoute } from '../unauthenticated.route';
 
 export const signInRoute = createRoute({
-    getParentRoute: () => rootRoute,
+    getParentRoute: () => unauthenticatedLayoutRoute,
     path: '/sign-in',
     component: lazyRouteComponent(() => import('~pages/sign-in'), 'SignInPage'),
 });

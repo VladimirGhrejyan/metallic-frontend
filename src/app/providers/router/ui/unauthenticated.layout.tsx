@@ -1,9 +1,9 @@
 import { Box } from '@mui/material';
 import { Outlet } from '@tanstack/react-router';
 
-export const RootLayout = () => {
+export const UnauthenticatedLayout = () => {
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        <Box sx={{ flex: 1, display: 'flex', mt: 20 }}>
             <Outlet />
         </Box>
     );

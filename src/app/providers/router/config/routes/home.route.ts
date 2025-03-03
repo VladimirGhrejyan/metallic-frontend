@@ -1,9 +1,9 @@
 import { createRoute, lazyRouteComponent } from '@tanstack/react-router';
 
-import { rootRoute } from '../root.route';
+import { authenticatedLayoutRoute } from '../authenticated.route';
 
 export const homeRoute = createRoute({
-    getParentRoute: () => rootRoute,
+    getParentRoute: () => authenticatedLayoutRoute,
     path: '/',
     component: lazyRouteComponent(() => import('~pages/home'), 'HomePage'),
 });
