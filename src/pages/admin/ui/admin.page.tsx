@@ -1,3 +1,5 @@
+import { Outlet } from '@tanstack/react-router';
+
 export const AdminPage = () => {
-    return <h1>Admin</h1>;
+    return <Outlet />;
 };

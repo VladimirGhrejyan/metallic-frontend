@@ -1,3 +1,5 @@
+import { PageHeader } from '~shared/ui/componets';
+
 export const HomePage = () => {
-    return <h1>Home Page</h1>;
+    return <PageHeader pageTitle="Home Page" />;
 };
