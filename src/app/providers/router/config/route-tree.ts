@@ -3,7 +3,11 @@ import { rootRoute } from './root.route.ts';
 import {
     adminRoute,
     homeRoute,
+    productCategoryCreateRoute,
+    productCreateRoute,
+    productsCategoryIdEditRoute,
     productsCategoryRoute,
+    productsIdEditRoute,
     productsRoute,
     signInRoute,
     signUpRoute,
@@ -13,7 +17,14 @@ import { unauthenticatedLayoutRoute } from './unauthenticated.route.ts';
 export const routeTree = rootRoute.addChildren([
     authenticatedLayoutRoute.addChildren([
         homeRoute,
-        adminRoute.addChildren([productsRoute, productsCategoryRoute]),
+        adminRoute.addChildren([
+            productsRoute,
+            productsIdEditRoute,
+            productCreateRoute,
+            productsCategoryRoute,
+            productsCategoryIdEditRoute,
+            productCategoryCreateRoute,
+        ]),
     ]),
     unauthenticatedLayoutRoute.addChildren([signInRoute, signUpRoute]),
 ]);

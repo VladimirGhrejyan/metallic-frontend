@@ -4,3 +4,7 @@ export * from './home.route';
 export * from './admin.route';
 export * from './products-category.route';
 export * from './products.route';
+export * from './products-id-edit.route';
+export * from './products-create.route';
+export * from './products-category-id-edit.route';
+export * from './products-category-create.route';
