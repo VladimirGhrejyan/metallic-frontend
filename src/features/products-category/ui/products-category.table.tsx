@@ -1,6 +1,7 @@
 import {
     IconButton,
     Paper,
+    Skeleton,
     Table,
     TableBody,
     TableCell,
@@ -8,46 +9,20 @@ import {
     TableHead,
     TableRow,
 } from '@mui/material';
+import { useNavigate } from '@tanstack/react-router';
 import { FC } from 'react';
 import { IoMdTrash } from 'react-icons/io';
 import { MdEdit } from 'react-icons/md';
+import {
+    useDeleteProductCategoryMutation,
+    useGetProductCategoriesQuery,
+} from '~entities/product-category';
 
-import { IData, ITableHeader } from '../model/table.types';
-
-// TODO get real data
-
-const rows: IData[] = [
+const tableHeaderRows = [
     {
-        code: 'iS483DUYJTa_AYC',
-        title: 'Product 1',
+        id: 'id',
+        title: 'Id',
     },
-    {
-        code: '3P8DCNFv8L8VjUb',
-        title: 'Product 2',
-    },
-    {
-        code: 'QKXH9A1E8OQcAWd',
-        title: 'Product 3',
-    },
-    {
-        code: 'R6qnvEPv_h0dhfZ',
-        title: 'Product 4',
-    },
-    {
-        code: '2MYaS7ng0oIBMb1',
-        title: 'Product 5',
-    },
-    {
-        code: '3Ct__c6a0zWqqgX',
-        title: 'Product 6',
-    },
-    {
-        code: 'rWCavsEbHP28psp',
-        title: 'Product 7',
-    },
-];
-
-const tableHeaderRows: ITableHeader[] = [
     {
         id: 'code',
         title: 'Code',
@@ -57,14 +32,37 @@ const tableHeaderRows: ITableHeader[] = [
         title: 'Title',
     },
     {
-        id: 'action',
+        id: 'created-at',
+        title: 'Created At',
+    },
+    {
+        id: 'upadted-at',
+        title: 'Updated At',
+    },
+    {
+        id: 'actions',
         title: 'Actions',
     },
 ];
 
 export const ProductsCategoryTable: FC = () => {
+    const navigate = useNavigate();
+    const { data, isLoading } = useGetProductCategoriesQuery();
+    const [deleteProductCategory, { isLoading: deleteIsLoading }] =
+        useDeleteProductCategoryMutation();
+
+    if (!data) {
+        return <Skeleton />;
+    }
+
     return (
-        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+        <Paper
+            sx={{
+                width: '100%',
+                overflow: 'hidden',
+                opacity: isLoading || deleteIsLoading ? '0.5' : 1,
+            }}
+        >
             <TableContainer sx={{ maxHeight: '540px', overflowX: 'auto' }}>
                 <Table stickyHeader>
                     <TableHead>
@@ -84,15 +82,30 @@ export const ProductsCategoryTable: FC = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map((row) => (
-                            <TableRow key={row.code}>
-                                <TableCell>{row.code}</TableCell>
+                        {data.map((row) => (
+                            <TableRow key={row.id}>
+                                <TableCell>{row.id}</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>{row.code}</TableCell>
                                 <TableCell>{row.title}</TableCell>
                                 <TableCell>
-                                    <IconButton color="primary" size="small">
+                                    <IconButton
+                                        onClick={() =>
+                                            navigate({
+                                                to: `/admin/products-category/${row.code}/edit`,
+                                            })
+                                        }
+                                        color="primary"
+                                        size="small"
+                                    >
                                         <MdEdit />
                                     </IconButton>
-                                    <IconButton color="primary" size="small">
+                                    <IconButton
+                                        onClick={() => {
+                                            deleteProductCategory({ id: row.id });
+                                        }}
+                                        color="primary"
+                                        size="small"
+                                    >
                                         <IoMdTrash />
                                     </IconButton>
                                 </TableCell>

@@ -39,6 +39,13 @@ const injectedRtkApi = api
                 }),
                 invalidatesTags: ['product-categories'],
             }),
+            getProductCategories: build.query<
+                GetProductCategoriesApiResponse,
+                GetProductCategoriesApiArg
+            >({
+                query: () => ({ url: `/product-categories/all` }),
+                providesTags: ['product-categories'],
+            }),
         }),
         overrideExisting: false,
     });
@@ -56,6 +63,8 @@ export type DeleteProductCategoryApiResponse = unknown;
 export type DeleteProductCategoryApiArg = {
     id: number;
 };
+export type GetProductCategoriesApiResponse = /** status 200  */ GetAllCategoriesDto;
+export type GetProductCategoriesApiArg = void;
 export type CreateProductCategoryDto = {
     title: string;
     code: string;
@@ -64,3 +73,8 @@ export type UpdateProductCategoryDto = {
     title?: string;
     code?: string;
 };
+export type GetAllCategoriesDto = {
+    id: number;
+    title: string;
+    code: string;
+}[];

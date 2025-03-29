@@ -5,4 +5,8 @@ export const {
     useCreateProductCategoryMutation,
     useUpdateProductCategoryMutation,
     useDeleteProductCategoryMutation,
+    useGetProductCategoriesQuery,
+    useLazyGetProductCategoriesQuery,
 } = productCategoryApi;
+
+export type { CreateProductCategoryApiArg } from './product-category.gen';
