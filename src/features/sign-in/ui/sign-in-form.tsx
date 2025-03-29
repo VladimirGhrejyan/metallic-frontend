@@ -1,7 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, Container, Grid2, Typography } from '@mui/material';
-import { FC } from 'react';
+import { Box, Button, Container, Grid2, IconButton, Typography } from '@mui/material';
+import { FC, useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
+import { useSignInMutation } from '~entities/auth';
 import { InputController } from '~shared/ui/controllers/input-controller';
 import { MuiCustomLink } from '~shared/ui/overrides/mui-link';
 
@@ -12,6 +14,7 @@ import { SignInFormValues } from '../model/form.types';
 const { SIGN_IN, SIGN_UP, NOT_REGISTERED } = signInFormConstants.TEXTS;
 
 export const SignInForm: FC = () => {
+    const [showPassword, setShowPassword] = useState<boolean>(false);
     const form = useForm<SignInFormValues>({
         defaultValues: {
             email: '',
@@ -20,9 +23,14 @@ export const SignInForm: FC = () => {
         resolver: zodResolver(signInSchema),
     });
 
+    const toggleShowPassword = () => {
+        setShowPassword((prev) => !prev);
+    };
+
+    const [signIn] = useSignInMutation();
+
     const onSubmit: SubmitHandler<SignInFormValues> = (formValues) => {
-        // TODO remove log
-        console.log(formValues);
+        signIn({ signInInputDto: { email: formValues.email, password: formValues.password } });
     };
 
     return (
@@ -64,7 +72,20 @@ export const SignInForm: FC = () => {
                                     label="Password"
                                     variant="outlined"
                                     name={'password'}
-                                    type="password"
+                                    type={showPassword ? 'text' : 'password'}
+                                    slotProps={{
+                                        input: {
+                                            endAdornment: (
+                                                <IconButton onClick={toggleShowPassword}>
+                                                    {showPassword ? (
+                                                        <FaRegEyeSlash size={20} />
+                                                    ) : (
+                                                        <FaRegEye size={20} />
+                                                    )}
+                                                </IconButton>
+                                            ),
+                                        },
+                                    }}
                                 />
                             </Grid2>
                         </Grid2>
