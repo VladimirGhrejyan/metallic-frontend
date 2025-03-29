@@ -8,6 +8,7 @@ import {
     TableHead,
     TableRow,
 } from '@mui/material';
+import { useNavigate } from '@tanstack/react-router';
 import { FC } from 'react';
 import { IoMdTrash } from 'react-icons/io';
 import { MdEdit } from 'react-icons/md';
@@ -96,6 +97,7 @@ const tableHeaderRows: ITableHeader[] = [
 ];
 
 export const ProductsTable: FC = () => {
+    const navigate = useNavigate();
     return (
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
             <TableContainer sx={{ maxHeight: '540px', overflowX: 'auto' }}>
@@ -125,7 +127,13 @@ export const ProductsTable: FC = () => {
                                 <TableCell>{row.costPrice}</TableCell>
                                 <TableCell>{row.markup}</TableCell>
                                 <TableCell>
-                                    <IconButton color="primary" size="small">
+                                    <IconButton
+                                        onClick={() =>
+                                            navigate({ to: `/admin/products/${row.code}/edit` })
+                                        }
+                                        color="primary"
+                                        size="small"
+                                    >
                                         <MdEdit />
                                     </IconButton>
                                     <IconButton color="primary" size="small">
