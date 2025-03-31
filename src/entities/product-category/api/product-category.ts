@@ -9,4 +9,7 @@ export const {
     useLazyGetProductCategoriesQuery,
 } = productCategoryApi;
 
-export type { CreateProductCategoryApiArg } from './product-category.gen';
+export type {
+    CreateProductCategoryApiArg,
+    GetProductCategoriesApiArg,
+} from './product-category.gen';

@@ -7,16 +7,26 @@ const injectedRtkApi = api
     })
     .injectEndpoints({
         endpoints: (build) => ({
-            createProductCategory: build.mutation<
-                CreateProductCategoryApiResponse,
-                CreateProductCategoryApiArg
+            getProductCategories: build.query<
+                GetProductCategoriesApiResponse,
+                GetProductCategoriesApiArg
             >({
                 query: (queryArg) => ({
-                    url: `/product-categories`,
-                    method: 'POST',
-                    body: queryArg.createProductCategoryDto,
+                    url: `/product-categories/all`,
+                    params: {
+                        search: queryArg.search,
+                        order: queryArg.order,
+                        sortBy: queryArg.sortBy,
+                    },
                 }),
-                invalidatesTags: ['product-categories'],
+                providesTags: ['product-categories'],
+            }),
+            getProductCategoryById: build.query<
+                GetProductCategoryByIdApiResponse,
+                GetProductCategoryByIdApiArg
+            >({
+                query: (queryArg) => ({ url: `/product-categories/${queryArg.id}` }),
+                providesTags: ['product-categories'],
             }),
             updateProductCategory: build.mutation<
                 UpdateProductCategoryApiResponse,
@@ -39,20 +49,30 @@ const injectedRtkApi = api
                 }),
                 invalidatesTags: ['product-categories'],
             }),
-            getProductCategories: build.query<
-                GetProductCategoriesApiResponse,
-                GetProductCategoriesApiArg
+            createProductCategory: build.mutation<
+                CreateProductCategoryApiResponse,
+                CreateProductCategoryApiArg
             >({
-                query: () => ({ url: `/product-categories/all` }),
-                providesTags: ['product-categories'],
+                query: (queryArg) => ({
+                    url: `/product-categories`,
+                    method: 'POST',
+                    body: queryArg.createProductCategoryDto,
+                }),
+                invalidatesTags: ['product-categories'],
             }),
         }),
         overrideExisting: false,
     });
 export { injectedRtkApi as enhancedApi };
-export type CreateProductCategoryApiResponse = unknown;
-export type CreateProductCategoryApiArg = {
-    createProductCategoryDto: CreateProductCategoryDto;
+export type GetProductCategoriesApiResponse = /** status 200  */ GetAllCategoriesOutputDto;
+export type GetProductCategoriesApiArg = {
+    search?: string;
+    order?: 'ASC' | 'DESC';
+    sortBy?: 'title' | 'code' | 'createdAt' | 'updatedAt';
+};
+export type GetProductCategoryByIdApiResponse = /** status 200  */ GetOneCategoryDto;
+export type GetProductCategoryByIdApiArg = {
+    id: number;
 };
 export type UpdateProductCategoryApiResponse = unknown;
 export type UpdateProductCategoryApiArg = {
@@ -63,18 +83,33 @@ export type DeleteProductCategoryApiResponse = unknown;
 export type DeleteProductCategoryApiArg = {
     id: number;
 };
-export type GetProductCategoriesApiResponse = /** status 200  */ GetAllCategoriesDto;
-export type GetProductCategoriesApiArg = void;
-export type CreateProductCategoryDto = {
+export type CreateProductCategoryApiResponse = unknown;
+export type CreateProductCategoryApiArg = {
+    createProductCategoryDto: CreateProductCategoryDto;
+};
+export type GetAllCategoriesOutputDto = {
+    items: {
+        title: string;
+        code: string;
+        id: number;
+        createdAt: string;
+        updatedAt: string | null;
+        deletedAt: string | null;
+    }[];
+};
+export type GetOneCategoryDto = {
     title: string;
     code: string;
+    id: number;
+    createdAt: string;
+    updatedAt: string | null;
+    deletedAt: string | null;
 };
 export type UpdateProductCategoryDto = {
     title?: string;
     code?: string;
 };
-export type GetAllCategoriesDto = {
-    id: number;
+export type CreateProductCategoryDto = {
     title: string;
     code: string;
-}[];
+};
