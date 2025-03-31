@@ -7,9 +7,14 @@ export const {
     useDeleteProductCategoryMutation,
     useGetProductCategoriesQuery,
     useLazyGetProductCategoriesQuery,
+    useGetProductCategoryByIdQuery,
+    useLazyGetProductCategoryByIdQuery,
 } = productCategoryApi;
 
 export type {
     CreateProductCategoryApiArg,
     GetProductCategoriesApiArg,
+    GetProductCategoriesApiResponse,
+    GetProductCategoryByIdApiResponse,
+    UpdateProductCategoryDto,
 } from './product-category.gen';

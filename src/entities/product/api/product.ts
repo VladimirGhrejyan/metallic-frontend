@@ -7,6 +7,14 @@ export const {
     useDeleteProductMutation,
     useGetProductsQuery,
     useLazyGetProductsQuery,
+    useGetProductByIdQuery,
+    useLazyGetProductByIdQuery,
 } = productApi;
 
-export type { CreateProductDto, GetProductsApiArg, GetProductsApiResponse } from './product.gen';
+export type {
+    CreateProductDto,
+    GetProductByIdApiResponse,
+    GetProductsApiArg,
+    GetProductsApiResponse,
+    UpdateProductDto,
+} from './product.gen';
