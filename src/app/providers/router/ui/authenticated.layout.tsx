@@ -6,7 +6,7 @@ import { Sidebar } from 'src/widgets/sidebar';
 import { Navbar } from '~widgets/navbar';
 
 export const AuthenticatedLayout = () => {
-    const isLargeScreen = useMediaQuery((theme) => theme.breakpoints.up('md'));
+    const isLargeScreen = useMediaQuery((theme) => theme.breakpoints.up('lg'));
 
     const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
 
