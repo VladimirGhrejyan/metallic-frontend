@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { FC } from 'react';
-import { SignOutButton } from '~shared/ui/componets/sign-out-button';
+import { SignOutButton } from '~shared/ui/componets';
 import { MuiCustomLink } from '~shared/ui/overrides/mui-link';
 
 import { navItems } from '../model/nav-items';

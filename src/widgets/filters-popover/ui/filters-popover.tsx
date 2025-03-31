@@ -1,14 +1,18 @@
-import { Autocomplete, Box, TextField } from '@mui/material';
+import { Box } from '@mui/material';
 import Button from '@mui/material/Button';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
-import * as React from 'react';
+import { FC, MouseEvent, ReactNode, useState } from 'react';
 import { IoFilterSharp } from 'react-icons/io5';
 
-export const FiltersPopover = () => {
-    const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+interface IProps {
+    children: ReactNode;
+}
 
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+export const FiltersPopover: FC<IProps> = ({ children }) => {
+    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+
+    const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
 
@@ -61,65 +65,9 @@ export const FiltersPopover = () => {
                         gap: 2,
                     }}
                 >
-                    <Autocomplete
-                        multiple
-                        disableCloseOnSelect
-                        limitTags={2}
-                        fullWidth
-                        options={[
-                            { title: 'The Shawshank Redemption', year: 1994 },
-                            { title: 'The Godfather', year: 1972 },
-                            { title: 'The Godfather: Part II', year: 1974 },
-                            { title: 'The Dark Knight', year: 2008 },
-                            { title: '12 Angry Men', year: 1957 },
-                            { title: "Schindler's List", year: 1993 },
-                            { title: 'Pulp Fiction', year: 1994 },
-                        ]}
-                        getOptionLabel={(option) => option.title}
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                variant="outlined"
-                                label="Product Categories"
-                                placeholder="Select Category"
-                                size="small"
-                            />
-                        )}
-                    />
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Button variant="text">Clear</Button>
-                        <Button variant="contained">Submit</Button>
-                    </Box>
+                    {children}
                 </Box>
             </Popover>
         </Box>
     );
 };
-
-/*
-
-<Autocomplete
-    multiple
-    disableCloseOnSelect
-    options={[
-        { title: 'The Shawshank Redemption', year: 1994 },
-        { title: 'The Godfather', year: 1972 },
-        { title: 'The Godfather: Part II', year: 1974 },
-        { title: 'The Dark Knight', year: 2008 },
-        { title: '12 Angry Men', year: 1957 },
-        { title: "Schindler's List", year: 1993 },
-        { title: 'Pulp Fiction', year: 1994 },
-    ]}
-    getOptionLabel={(option) => option.title}
-    renderInput={(params) => (
-        <TextField
-            {...params}
-            variant="filled"
-            label="freeSolo"
-            placeholder="Favorites"
-        />
-    )}
-    sx={{ width: 300 }}
-/>
-
-*/

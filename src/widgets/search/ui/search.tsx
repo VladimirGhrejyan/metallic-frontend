@@ -1,25 +1,26 @@
-import { Box, TextField } from '@mui/material';
-import { FC } from 'react';
-import { FiltersPopover } from '~widgets/filters-popover';
+import { TextField, debounce } from '@mui/material';
+import { FC, useMemo } from 'react';
+import { useFormContext } from 'react-hook-form';
 
-interface IProps {
-    searchValue: string;
-    onChange: (value: string) => void;
-}
+export const Search: FC = () => {
+    const { register, setValue } = useFormContext();
 
-export const Search: FC<IProps> = ({ searchValue, onChange }) => {
+    const debouncedSetValue = useMemo(
+        () =>
+            debounce((value: string) => {
+                setValue('searchQuery', value, { shouldValidate: true });
+            }, 500),
+        [setValue],
+    );
+
     return (
-        <Box display="flex" gap={2}>
-            <TextField
-                label="Search"
-                variant="outlined"
-                value={searchValue}
-                onChange={(e) => onChange(e.target.value)}
-                fullWidth
-                size="small"
-                autoComplete="off"
-            />
-            <FiltersPopover />
-        </Box>
+        <TextField
+            fullWidth
+            variant="outlined"
+            size="small"
+            placeholder="Search"
+            {...register('searchQuery')}
+            onChange={(e) => debouncedSetValue(e.target.value)}
+        />
     );
 };
