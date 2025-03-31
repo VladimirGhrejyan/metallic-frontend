@@ -5,5 +5,5 @@ import { adminRoute } from './admin.route';
 export const productCreateRoute = createRoute({
     getParentRoute: () => adminRoute,
     path: '/products/create',
-    component: lazyRouteComponent(() => import('~pages/products-create'), 'ProductIdCreatePage'),
+    component: lazyRouteComponent(() => import('~pages/admin-products'), 'CreateProductPage'),
 });
