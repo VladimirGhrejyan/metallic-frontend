@@ -1,25 +1,17 @@
 import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
 import { useNavigate } from '@tanstack/react-router';
 import React from 'react';
-
-interface IProduct {
-    code: string;
-    title: string;
-    costPrice: number;
-    markup: number;
-    categoryId: number;
-    imageUrl?: string;
-}
+import { GetProductByIdApiResponse } from '~entities/product';
 
 interface ProductCardProps {
-    product: IProduct;
+    product: GetProductByIdApiResponse;
 }
 
-export const ProductsCard: React.FC<ProductCardProps> = ({ product }) => {
+export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     const navigate = useNavigate();
     return (
         <Card
-            onClick={() => navigate({ to: `/admin/products/${product.code}/edit` })}
+            onClick={() => navigate({ to: `/admin/products/${product.id}/edit` })}
             sx={{
                 flex: 1,
                 borderRadius: 2,
@@ -33,9 +25,11 @@ export const ProductsCard: React.FC<ProductCardProps> = ({ product }) => {
         >
             <CardMedia
                 component="img"
-                height="150"
-                image={product.imageUrl || 'https://via.placeholder.com/300'}
+                image={''} // TODO
                 alt={product.title}
+                sx={{
+                    height: 150,
+                }}
             />
             <CardContent sx={{ px: 0 }}>
                 <Typography variant="h6" fontWeight="bold">
@@ -43,7 +37,7 @@ export const ProductsCard: React.FC<ProductCardProps> = ({ product }) => {
                 </Typography>
                 <Typography variant="body1">Code: {product.code}</Typography>
                 <Box mt={1}>
-                    <Typography variant="body1">Cost Price: ${product.costPrice}</Typography>
+                    <Typography variant="body1">Cost Price: {product.costPrice}</Typography>
                     <Typography variant="body1">Markup: {product.markup}</Typography>
                 </Box>
             </CardContent>
