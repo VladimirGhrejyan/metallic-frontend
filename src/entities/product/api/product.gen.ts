@@ -103,6 +103,8 @@ export type GetAllProductsOutputDto = {
         costPrice: number;
         markup: number;
         categoryId: number;
+        quantityAvailable: number;
+        description: string | null;
         image: {
             id: number;
             name: string;
@@ -128,6 +130,8 @@ export type GetOneProductOutputDto = {
     costPrice: number;
     markup: number;
     categoryId: number;
+    quantityAvailable: number;
+    description: string | null;
     image: {
         id: number;
         name: string;
@@ -146,6 +150,8 @@ export type CreateProductDto = {
     costPrice: number;
     markup: number;
     categoryId: number;
+    quantityAvailable?: number;
+    description?: string;
 };
 export type UpdateProductDto = {
     title?: string;
@@ -153,4 +159,6 @@ export type UpdateProductDto = {
     costPrice?: number;
     markup?: number;
     categoryId?: number;
+    quantityAvailable?: number;
+    description?: string;
 };
