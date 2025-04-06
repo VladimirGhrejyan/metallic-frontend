@@ -9,6 +9,7 @@ export const {
     useLazyGetProductsQuery,
     useGetProductByIdQuery,
     useLazyGetProductByIdQuery,
+    useUpdateProductImageMutation,
 } = productApi;
 
 export type {
@@ -17,4 +18,5 @@ export type {
     GetProductsApiArg,
     GetProductsApiResponse,
     UpdateProductDto,
+    UpdateProductImageApiArg,
 } from './product.gen';

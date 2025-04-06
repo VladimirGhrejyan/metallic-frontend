@@ -72,7 +72,7 @@ export type GetProductsApiArg = {
     page?: string;
     itemsPerPage?: string;
 };
-export type CreateProductApiResponse = unknown;
+export type CreateProductApiResponse = /** status 201  */ GetOneProductOutputDto;
 export type CreateProductApiArg = {
     createProductDto: CreateProductDto;
 };
@@ -80,7 +80,7 @@ export type GetProductByIdApiResponse = /** status 200  */ GetOneProductOutputDt
 export type GetProductByIdApiArg = {
     id: number;
 };
-export type UpdateProductApiResponse = unknown;
+export type UpdateProductApiResponse = /** status 200  */ GetOneProductOutputDto;
 export type UpdateProductApiArg = {
     id: number;
     updateProductDto: UpdateProductDto;
@@ -103,6 +103,13 @@ export type GetAllProductsOutputDto = {
         costPrice: number;
         markup: number;
         categoryId: number;
+        image: {
+            id: number;
+            name: string;
+            path: string;
+            mimeType: string;
+            url: string;
+        } | null;
         id: number;
         createdAt: string;
         updatedAt: string | null;
@@ -115,23 +122,30 @@ export type GetAllProductsOutputDto = {
         itemsPerPage: number;
     };
 };
-export type CreateProductDto = {
-    title: string;
-    code: string;
-    costPrice: number;
-    markup: number;
-    categoryId: number;
-};
 export type GetOneProductOutputDto = {
     title: string;
     code: string;
     costPrice: number;
     markup: number;
     categoryId: number;
+    image: {
+        id: number;
+        name: string;
+        path: string;
+        mimeType: string;
+        url: string;
+    } | null;
     id: number;
     createdAt: string;
     updatedAt: string | null;
     deletedAt: string | null;
+};
+export type CreateProductDto = {
+    title: string;
+    code: string;
+    costPrice: number;
+    markup: number;
+    categoryId: number;
 };
 export type UpdateProductDto = {
     title?: string;
