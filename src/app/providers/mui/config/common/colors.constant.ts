@@ -22,4 +22,6 @@ export const COLORS = {
         PRIMARY: '#333333',
         SECONDARY: '#666666',
     },
+
+    DIVIDER: '#CFD1D4',
 };

@@ -26,4 +26,6 @@ export const colorPalette: PaletteOptions = {
         primary: COLORS.TEXT.PRIMARY,
         secondary: COLORS.TEXT.SECONDARY,
     },
+
+    divider: COLORS.DIVIDER,
 };

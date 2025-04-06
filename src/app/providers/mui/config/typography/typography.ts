@@ -16,6 +16,9 @@ export const typography: TypographyOptions = {
     body1: {
         fontSize: '1rem',
         lineHeight: 1.5,
+        '@media (max-width:1024px)': {
+            fontSize: '1.25rem',
+        },
     },
 
     body2: {
