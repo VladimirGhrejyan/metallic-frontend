@@ -10,5 +10,6 @@ export const updateProductConstants = {
         COST_PRICE_REQUIRED: 'Cost price is required',
         MARKUP_REQUIRED: 'Markup is required',
         CATEGORY_ID_REQUIRED: 'Category id is required',
+        QUANTITY_AVAILABLE_REQUIRED: 'Quantity available is required',
     },
 };

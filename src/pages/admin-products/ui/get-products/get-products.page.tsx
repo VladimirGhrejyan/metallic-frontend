@@ -4,25 +4,12 @@ import { useNavigate } from '@tanstack/react-router';
 import { ChangeEvent, MouseEvent, useCallback, useMemo, useState } from 'react';
 import { useGetProductsQuery } from '~entities/product';
 import { ProductsFilters, ProductsTable } from '~features/admin-products';
+import { filterQueryArgs } from '~shared/helpers';
 import { Loader, PageHeader } from '~shared/ui/componets';
 import { SearchInput } from '~shared/ui/componets/search-input';
 import { FiltersPopover } from '~widgets/filters-popover';
 
 import { TProductsQueryArgs } from '../../model/get-products/admin-products.types';
-
-const filterQueryArgs = (
-    queryArgs: TProductsQueryArgs,
-    incrementPage: boolean = false,
-): Omit<TProductsQueryArgs, ''> => {
-    return {
-        ...Object.fromEntries(
-            Object.entries(queryArgs).filter(([_, value]) => value !== undefined && value !== ''),
-        ),
-        ...(incrementPage && queryArgs.page
-            ? { page: (Number(queryArgs.page) + 1).toString() }
-            : {}),
-    };
-};
 
 export const GetProductsPage = () => {
     const navigate = useNavigate();

@@ -10,6 +10,7 @@ const {
     CATEGORY_ID_REQUIRED,
     COST_PRICE_REQUIRED,
     MARKUP_REQUIRED,
+    QUANTITY_AVAILABLE_REQUIRED,
 } = updateProductConstants.ERRORS;
 
 export const updateProductFormSchema = z.object({
@@ -27,8 +28,15 @@ export const updateProductFormSchema = z.object({
         .refine((val) => !isNaN(val!), {
             message: MARKUP_REQUIRED,
         }),
+    quantityAvailable: z
+        .union([z.string(), z.number()])
+        .transform((val) => (typeof val === 'string' ? parseFloat(val) : val))
+        .refine((val) => !isNaN(val!), {
+            message: QUANTITY_AVAILABLE_REQUIRED,
+        }),
     categoryId: z
         .number({ required_error: CATEGORY_ID_REQUIRED })
         .nullable()
         .refine((val) => val !== null, { message: CATEGORY_ID_REQUIRED }),
+    description: z.string().optional(),
 });

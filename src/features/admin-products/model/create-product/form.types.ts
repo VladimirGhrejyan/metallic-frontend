@@ -4,4 +4,6 @@ export type CreateProductFormValues = {
     costPrice: number;
     markup: number;
     categoryId: number | null;
+    quantityAvailable: number;
+    description?: string;
 };

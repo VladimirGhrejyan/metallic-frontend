@@ -7,21 +7,12 @@ import {
     ProductsCategoriesFilters,
     ProductsCategoriesTable,
 } from '~features/admin-products-categories';
+import { filterQueryArgs } from '~shared/helpers';
 import { Loader, PageHeader } from '~shared/ui/componets';
 import { SearchInput } from '~shared/ui/componets/search-input';
 import { FiltersPopover } from '~widgets/filters-popover';
 
 import { TProductsCategoriesQueryArgs } from '../../model/get-product-categories/form.types';
-
-const filterQueryArgs = (
-    queryArgs: TProductsCategoriesQueryArgs,
-): Omit<TProductsCategoriesQueryArgs, ''> => {
-    return {
-        ...Object.fromEntries(
-            Object.entries(queryArgs).filter(([_, value]) => value !== undefined && value !== ''),
-        ),
-    };
-};
 
 export const GetProductsCategoriesPage = () => {
     const navigate = useNavigate();
@@ -46,10 +37,7 @@ export const GetProductsCategoriesPage = () => {
     );
 
     const onResetFilters = useCallback(() => {
-        setQueryArgs((prev) => {
-            const { order, sortBy, ...rest } = prev;
-            return rest;
-        });
+        setQueryArgs({});
     }, [setQueryArgs]);
 
     const memoizedDefaultFilters: Omit<TProductsCategoriesQueryArgs, 'search'> = useMemo(() => {

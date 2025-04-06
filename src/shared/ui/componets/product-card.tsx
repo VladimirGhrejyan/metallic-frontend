@@ -1,7 +1,8 @@
-import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
+import { Card, CardContent, CardMedia, Typography } from '@mui/material';
 import { useNavigate } from '@tanstack/react-router';
 import React from 'react';
 import { GetProductByIdApiResponse } from '~entities/product';
+import { calculateTotalPrice } from '~shared/helpers';
 
 interface ProductCardProps {
     product: GetProductByIdApiResponse;
@@ -9,12 +10,13 @@ interface ProductCardProps {
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     const navigate = useNavigate();
+    const productImageUrl = product.image?.url || 'src/shared/assets/placeholder.png';
     return (
         <Card
             onClick={() => navigate({ to: `/admin/products/${product.id}/edit` })}
             sx={{
                 width: 300,
-                height: 400,
+                height: 320,
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
@@ -29,7 +31,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         >
             <CardMedia
                 component="img"
-                image={product.image ? product.image.url : '/shared/assets/placeholder.png'}
+                image={productImageUrl}
                 alt={product.title}
                 sx={{
                     height: 180,
@@ -54,10 +56,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 <Typography variant="body1" noWrap>
                     Code: {product.code}
                 </Typography>
-                <Box mt={1}>
-                    <Typography variant="body1">Cost Price: {product.costPrice}</Typography>
-                    <Typography variant="body1">Markup: {product.markup}</Typography>
-                </Box>
+                <Typography variant="body1">
+                    Total Price: {calculateTotalPrice(product.costPrice, product.markup)}
+                </Typography>
             </CardContent>
         </Card>
     );

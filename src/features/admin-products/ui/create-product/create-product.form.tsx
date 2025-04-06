@@ -9,8 +9,6 @@ import {
     IconButton,
     Typography,
 } from '@mui/material';
-import imageCompression from 'browser-image-compression';
-import heic2any from 'heic2any';
 import { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
@@ -20,6 +18,7 @@ import {
     useUpdateProductImageMutation,
 } from '~entities/product';
 import { useGetProductCategoriesQuery } from '~entities/product-category';
+import { cleanObjectByKeys, compressImage, convertHeicToJpeg } from '~shared/helpers';
 import { Loader, PageHeader } from '~shared/ui/componets';
 import { InputController } from '~shared/ui/controllers/input-controller';
 import { AutocompleteController } from '~shared/ui/controllers/input-controller/autocomplete-controller';
@@ -41,58 +40,20 @@ export const CreateProductForm = () => {
             categoryId: null,
             costPrice: 0,
             markup: 0,
+            quantityAvailable: 0,
+            description: '',
         },
         resolver: zodResolver(createProductFormSchema),
     });
 
-    const convertHeicToJpeg = async (file: File) => {
-        try {
-            const blob = await heic2any({
-                blob: file,
-                toType: 'image/jpeg',
-                quality: 0.8,
-            });
-
-            const convertedBlob = Array.isArray(blob) ? blob[0] : blob;
-
-            return new File([convertedBlob], file.name.replace('.heic', '.jpg'), {
-                type: 'image/jpeg',
-            });
-        } catch (error) {
-            console.error('HEIC Conversion error:', error);
-            return file;
-        }
-    };
-
-    const handleImageUpload = async (file: File) => {
-        if (!file) return;
-
-        const options = {
-            maxSizeMB: 0.2,
-            maxWidthOrHeight: 800,
-            useWebWorker: true,
-        };
-
-        try {
-            const compressedFile = await imageCompression(file, options);
-            return compressedFile;
-        } catch (error) {
-            console.error('Image Compression error', error);
-            return file;
-        }
-    };
-
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop: async (acceptedFiles) => {
             let completedFile: File | undefined = acceptedFiles[0];
-            if (completedFile.type.includes('heic')) {
-                setIsImageUploading(true);
-                completedFile = await convertHeicToJpeg(completedFile);
-
-                setIsImageUploading(false);
-            }
             setIsImageUploading(true);
-            completedFile = await handleImageUpload(completedFile);
+            if (completedFile.type.includes('heic')) {
+                completedFile = await convertHeicToJpeg(completedFile);
+            }
+            completedFile = await compressImage(completedFile);
             setFile(completedFile);
             setIsImageUploading(false);
         },
@@ -111,17 +72,27 @@ export const CreateProductForm = () => {
     const { data, isLoading: isGetLoading } = useGetProductCategoriesQuery({});
 
     const onSubmit: SubmitHandler<CreateProductFormValues> = (formValues) => {
-        const formData = new FormData();
-        formData.append('image', file as Blob, (file as File).name);
-        createProduct({ createProductDto: formValues as CreateProductDto })
+        const cleanedValues = cleanObjectByKeys(formValues, ['description']);
+
+        createProduct({ createProductDto: cleanedValues as CreateProductDto })
             .unwrap()
             .then((res) => {
-                updateProductImage({ id: res.id, body: formData as unknown as { image?: Blob } })
-                    .unwrap()
-                    .then(() => {
-                        form.reset();
-                        setFile(undefined);
-                    });
+                if (file) {
+                    const formData = new FormData();
+                    formData.append('image', file as Blob, (file as File).name);
+                    updateProductImage({
+                        id: res.id,
+                        body: formData as unknown as { image?: Blob },
+                    })
+                        .unwrap()
+                        .then(() => {
+                            form.reset();
+                            setFile(undefined);
+                        });
+                } else {
+                    form.reset();
+                    setFile(undefined);
+                }
             });
     };
 
@@ -260,7 +231,6 @@ export const CreateProductForm = () => {
                                     variant="outlined"
                                 />
                             </Grid2>
-
                             <Grid2 size={12}>
                                 <InputController
                                     fullWidth
@@ -290,6 +260,16 @@ export const CreateProductForm = () => {
                                 />
                             </Grid2>
                             <Grid2 size={12}>
+                                <InputNumberController
+                                    fullWidth
+                                    name={'quantityAvailable'}
+                                    label="Quantity Available"
+                                    variant="outlined"
+                                    decimalScale={0}
+                                    allowNegative={false}
+                                />
+                            </Grid2>
+                            <Grid2 size={12}>
                                 <AutocompleteController
                                     loading={isGetLoading}
                                     options={data ? data.items : []}
@@ -297,6 +277,16 @@ export const CreateProductForm = () => {
                                     name="categoryId"
                                     label="Category Id"
                                     placeholder="Category Id"
+                                />
+                            </Grid2>
+                            <Grid2 size={12}>
+                                <InputController
+                                    fullWidth
+                                    name={'description'}
+                                    multiline
+                                    rows={4}
+                                    label="Description"
+                                    variant="outlined"
                                 />
                             </Grid2>
                         </Grid2>

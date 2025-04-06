@@ -4,4 +4,6 @@ export type UpdateProductFormValues = {
     costPrice: number;
     markup: number;
     categoryId: number;
+    quantityAvailable: number;
+    description?: string;
 };
