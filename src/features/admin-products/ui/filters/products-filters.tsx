@@ -1,4 +1,4 @@
-import { Box, Button } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { FC } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { useGetProductCategoriesQuery } from '~entities/product-category';
@@ -50,7 +50,7 @@ export const ProductsFilters: FC<IProps> = ({ onFiltersSubmit, onResetFilters, d
                 <AutocompleteController
                     loading={isLoading}
                     options={data ? data.items : []}
-                    getOptionLabel={(option) => `${option.title}, ${option.code}`}
+                    getOptionLabel={(option) => `${option.title} - ${option.code}`}
                     name="categoryId"
                     label="Category Id"
                     placeholder="Category Id"
@@ -81,10 +81,10 @@ export const ProductsFilters: FC<IProps> = ({ onFiltersSubmit, onResetFilters, d
                 />
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Button disabled={isLoading} variant="text" onClick={onReset}>
-                        Clear
+                        <Typography>Clear</Typography>
                     </Button>
                     <Button disabled={isLoading} type="submit" variant="contained">
-                        Submit
+                        <Typography>Submit</Typography>
                     </Button>
                 </Box>
             </Box>

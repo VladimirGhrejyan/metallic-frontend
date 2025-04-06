@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { FC } from 'react';
 import { SignOutButton } from '~shared/ui/componets';
 import { MuiCustomLink } from '~shared/ui/overrides/mui-link';
@@ -55,7 +55,7 @@ export const Navbar: FC<IProps> = ({ isInDrawer }) => {
                             textDecoration: 'none',
                         }}
                     >
-                        {item.name}
+                        <Typography>{item.name}</Typography>
                     </MuiCustomLink>
                 ))}
             </Box>

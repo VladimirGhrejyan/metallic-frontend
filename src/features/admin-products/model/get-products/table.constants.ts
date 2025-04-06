@@ -1,17 +1,7 @@
 export const tableHeaderRows = [
     {
-        id: 'code',
-        title: 'Code',
-        align: 'start',
-    },
-    {
-        id: 'title',
-        title: 'Title',
-        align: 'start',
-    },
-    {
-        id: 'categoryId',
-        title: 'Category ID',
+        id: 'title-code',
+        title: 'Title - Code',
         align: 'start',
     },
     {
@@ -22,6 +12,11 @@ export const tableHeaderRows = [
     {
         id: 'markup',
         title: 'Markup',
+        align: 'start',
+    },
+    {
+        id: 'total-price',
+        title: 'Total Price',
         align: 'start',
     },
     {

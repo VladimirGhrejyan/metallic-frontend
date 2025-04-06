@@ -1,3 +1,5 @@
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import {
     IconButton,
     Paper,
@@ -8,13 +10,15 @@ import {
     TableHead,
     TablePagination,
     TableRow,
+    Typography,
 } from '@mui/material';
 import { useNavigate } from '@tanstack/react-router';
 import { ChangeEvent, FC, MouseEvent } from 'react';
-import { IoMdTrash } from 'react-icons/io';
-import { MdEdit } from 'react-icons/md';
 import { GetProductsApiResponse, useDeleteProductMutation } from '~entities/product';
-import { tableHeaderRows } from '~features/admin-products/model/get-products/table.constants';
+import { calculateTotalPrice } from '~shared/helpers';
+import { NoData } from '~shared/ui/componets';
+
+import { tableHeaderRows } from '../../model/get-products/table.constants';
 
 interface IProps {
     data: GetProductsApiResponse;
@@ -56,53 +60,71 @@ export const ProductsTable: FC<IProps> = ({
                             {tableHeaderRows.map((tableHeader) => (
                                 <TableCell
                                     key={tableHeader.id}
-                                    sx={{
-                                        backgroundColor: 'primary.main',
-                                        color: 'white',
-                                        fontWeight: 'bold',
-                                        textAlign: tableHeader.align,
-                                        whiteSpace: 'nowrap',
-                                    }}
+                                    sx={{ backgroundColor: 'primary.main' }}
                                 >
-                                    {tableHeader.title}
+                                    <Typography
+                                        sx={{
+                                            color: 'white',
+                                            fontWeight: 'bold',
+                                            textAlign: tableHeader.align,
+                                            whiteSpace: 'nowrap',
+                                        }}
+                                    >
+                                        {tableHeader.title}
+                                    </Typography>
                                 </TableCell>
                             ))}
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {items.map((row) => (
-                            <TableRow key={row.id}>
-                                <TableCell sx={{ fontWeight: 'bold' }}>{row.code}</TableCell>
-                                <TableCell sx={{ wordBreak: 'break-all' }}>{row.title}</TableCell>
-                                <TableCell>{row.categoryId}</TableCell>
-                                <TableCell>{row.costPrice}</TableCell>
-                                <TableCell>{row.markup}</TableCell>
-                                <TableCell sx={{ whiteSpace: 'nowrap', textAlign: 'center' }}>
-                                    <IconButton
-                                        disabled={isDisabled || isLoading}
-                                        onClick={() =>
-                                            navigate({
-                                                to: `/admin/products/${row.id}/edit`,
-                                            })
-                                        }
-                                        color="primary"
-                                        size="small"
-                                    >
-                                        <MdEdit />
-                                    </IconButton>
-                                    <IconButton
-                                        disabled={isDisabled || isLoading}
-                                        onClick={() => {
-                                            deleteProduct({ id: row.id });
-                                        }}
-                                        color="error"
-                                        size="small"
-                                    >
-                                        <IoMdTrash />
-                                    </IconButton>
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                        {items.length ? (
+                            items.map((row) => (
+                                <TableRow key={row.id}>
+                                    <TableCell>
+                                        <Typography
+                                            sx={{ wordBreak: 'break-all', fontWeight: 'bold' }}
+                                        >{`${row.title} - ${row.code}`}</Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Typography>{row.costPrice}</Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Typography>{row.markup}</Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Typography>
+                                            {calculateTotalPrice(row.costPrice, row.markup)}
+                                        </Typography>
+                                    </TableCell>
+                                    <TableCell sx={{ whiteSpace: 'nowrap', textAlign: 'center' }}>
+                                        <IconButton
+                                            disabled={isDisabled || isLoading}
+                                            onClick={() =>
+                                                navigate({
+                                                    to: `/admin/products/${row.id}/edit`,
+                                                })
+                                            }
+                                            color="primary"
+                                            size="small"
+                                        >
+                                            <EditIcon />
+                                        </IconButton>
+                                        <IconButton
+                                            disabled={isDisabled || isLoading}
+                                            onClick={() => {
+                                                deleteProduct({ id: row.id });
+                                            }}
+                                            color="error"
+                                            size="small"
+                                        >
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </TableCell>
+                                </TableRow>
+                            ))
+                        ) : (
+                            <NoData colSpan={tableHeaderRows.length} />
+                        )}
                     </TableBody>
                     <TablePagination
                         disabled={isDisabled || isLoading}

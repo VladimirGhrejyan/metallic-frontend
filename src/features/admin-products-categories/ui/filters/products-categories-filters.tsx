@@ -1,4 +1,4 @@
-import { Box, Button } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { FC } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { TProductsCategoriesFiltersFormValues } from '~features/admin-products-categories/model/filters/form.types';
@@ -70,10 +70,10 @@ export const ProductsCategoriesFilters: FC<IProps> = ({
                 />
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Button variant="text" onClick={onReset}>
-                        Clear
+                        <Typography>Clear</Typography>
                     </Button>
                     <Button type="submit" variant="contained">
-                        Submit
+                        <Typography>Submit</Typography>
                     </Button>
                 </Box>
             </Box>

@@ -5,6 +5,6 @@ interface IProps {
 }
 
 export const PageHeader = ({ pageTitle }: IProps) => {
-    const isLargeScreen = useMediaQuery((theme) => theme.breakpoints.up('md'));
+    const isLargeScreen = useMediaQuery((theme) => theme.breakpoints.up('lg'));
     return <Typography variant={isLargeScreen ? 'h2' : 'h5'}>{pageTitle}</Typography>;
 };

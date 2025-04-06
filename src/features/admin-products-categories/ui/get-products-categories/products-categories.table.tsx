@@ -1,3 +1,5 @@
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import {
     IconButton,
     Paper,
@@ -7,14 +9,14 @@ import {
     TableContainer,
     TableHead,
     TableRow,
+    Typography,
 } from '@mui/material';
 import { useNavigate } from '@tanstack/react-router';
 import { FC } from 'react';
-import { IoMdTrash } from 'react-icons/io';
-import { MdEdit } from 'react-icons/md';
 import { useDeleteProductCategoryMutation } from '~entities/product-category';
 import { GetProductCategoriesApiResponse } from '~entities/product-category/api/product-category';
 import { tableHeaderRows } from '~features/admin-products-categories/model/get-products/table.constants';
+import { NoData } from '~shared/ui/componets';
 
 interface IProps {
     data: GetProductCategoriesApiResponse;
@@ -22,6 +24,7 @@ interface IProps {
 }
 
 export const ProductsCategoriesTable: FC<IProps> = ({ data, isDisabled }) => {
+    const { items } = data;
     const navigate = useNavigate();
 
     const [deleteProductCategory, { isLoading: deleteIsLoading }] =
@@ -32,7 +35,7 @@ export const ProductsCategoriesTable: FC<IProps> = ({ data, isDisabled }) => {
             sx={{
                 width: '100%',
                 overflow: 'hidden',
-                opacity: isDisabled ? '0.7' : 1,
+                opacity: isDisabled || deleteIsLoading ? '0.7' : 1,
             }}
         >
             <TableContainer>
@@ -44,47 +47,62 @@ export const ProductsCategoriesTable: FC<IProps> = ({ data, isDisabled }) => {
                                     key={tableHeader.id}
                                     sx={{
                                         backgroundColor: 'primary.main',
-                                        color: 'white',
-                                        fontWeight: 'bold',
-                                        textAlign: tableHeader.align,
                                     }}
                                 >
-                                    {tableHeader.title}
+                                    <Typography
+                                        sx={{
+                                            color: 'white',
+                                            fontWeight: 'bold',
+                                            textAlign: tableHeader.align,
+                                        }}
+                                    >
+                                        {tableHeader.title}
+                                    </Typography>
                                 </TableCell>
                             ))}
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data?.items.map((row) => (
-                            <TableRow key={row.id}>
-                                <TableCell sx={{ fontWeight: 'bold' }}>{row.code}</TableCell>
-                                <TableCell>{row.title}</TableCell>
-                                <TableCell sx={{ whiteSpace: 'nowrap', textAlign: 'center' }}>
-                                    <IconButton
-                                        disabled={isDisabled || deleteIsLoading}
-                                        onClick={() =>
-                                            navigate({
-                                                to: `/admin/products-categories/${row.id}/edit`,
-                                            })
-                                        }
-                                        color="primary"
-                                        size="small"
-                                    >
-                                        <MdEdit />
-                                    </IconButton>
-                                    <IconButton
-                                        disabled={isDisabled || deleteIsLoading}
-                                        onClick={() => {
-                                            deleteProductCategory({ id: row.id });
-                                        }}
-                                        color="error"
-                                        size="small"
-                                    >
-                                        <IoMdTrash />
-                                    </IconButton>
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                        {items.length ? (
+                            items.map((row) => (
+                                <TableRow key={row.id}>
+                                    <TableCell>
+                                        <Typography sx={{ fontWeight: 'bold' }}>
+                                            {row.code}
+                                        </Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Typography>{row.title}</Typography>
+                                    </TableCell>
+                                    <TableCell sx={{ whiteSpace: 'nowrap', textAlign: 'center' }}>
+                                        <IconButton
+                                            disabled={isDisabled || deleteIsLoading}
+                                            onClick={() =>
+                                                navigate({
+                                                    to: `/admin/products-categories/${row.id}/edit`,
+                                                })
+                                            }
+                                            color="primary"
+                                            size="small"
+                                        >
+                                            <EditIcon />
+                                        </IconButton>
+                                        <IconButton
+                                            disabled={isDisabled || deleteIsLoading}
+                                            onClick={() => {
+                                                deleteProductCategory({ id: row.id });
+                                            }}
+                                            color="error"
+                                            size="small"
+                                        >
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </TableCell>
+                                </TableRow>
+                            ))
+                        ) : (
+                            <NoData colSpan={tableHeaderRows.length} />
+                        )}
                     </TableBody>
                 </Table>
             </TableContainer>
