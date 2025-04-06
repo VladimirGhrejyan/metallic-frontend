@@ -102,6 +102,7 @@ export const HomePage = () => {
             </Box>
             <ProductsSection data={data.items} />
             <TablePagination
+                component="div"
                 count={data.meta.totalItems}
                 page={Number(queryArgs.page) || 0}
                 rowsPerPage={data.meta.itemsPerPage}
