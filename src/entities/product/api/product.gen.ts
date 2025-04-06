@@ -1,4 +1,4 @@
-import { api } from '/Users/surenstepanyan/Desktop/DEVELOPMENT/METALIC PROJECT/metallic-frontend/src/shared/config/api';
+import { api } from '~shared/config/api';
 
 export const addTagTypes = ['products'] as const;
 const injectedRtkApi = api
@@ -48,6 +48,17 @@ const injectedRtkApi = api
                 }),
                 invalidatesTags: ['products'],
             }),
+            updateProductImage: build.mutation<
+                UpdateProductImageApiResponse,
+                UpdateProductImageApiArg
+            >({
+                query: (queryArg) => ({
+                    url: `/products/${queryArg.id}/image`,
+                    method: 'PATCH',
+                    body: queryArg.body,
+                }),
+                invalidatesTags: ['products'],
+            }),
         }),
         overrideExisting: false,
     });
@@ -77,6 +88,13 @@ export type UpdateProductApiArg = {
 export type DeleteProductApiResponse = unknown;
 export type DeleteProductApiArg = {
     id: number;
+};
+export type UpdateProductImageApiResponse = unknown;
+export type UpdateProductImageApiArg = {
+    id: number;
+    body: {
+        image?: Blob;
+    };
 };
 export type GetAllProductsOutputDto = {
     items: {
