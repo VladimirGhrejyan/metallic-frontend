@@ -1,7 +1,24 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, Grid2 } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import {
+    Box,
+    Button,
+    CardMedia,
+    CircularProgress,
+    Grid2,
+    IconButton,
+    Typography,
+} from '@mui/material';
+import imageCompression from 'browser-image-compression';
+import heic2any from 'heic2any';
+import { useState } from 'react';
+import { useDropzone } from 'react-dropzone';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { CreateProductDto, useCreateProductMutation } from '~entities/product';
+import {
+    CreateProductDto,
+    useCreateProductMutation,
+    useUpdateProductImageMutation,
+} from '~entities/product';
 import { useGetProductCategoriesQuery } from '~entities/product-category';
 import { Loader, PageHeader } from '~shared/ui/componets';
 import { InputController } from '~shared/ui/controllers/input-controller';
@@ -15,6 +32,8 @@ import { CreateProductFormValues } from '../../model/create-product/form.types';
 const { CREATE } = createProductConstants.TEXTS;
 
 export const CreateProductForm = () => {
+    const [file, setFile] = useState<File | undefined>(undefined);
+    const [isImageUploading, setIsImageUploading] = useState<boolean>(false);
     const form = useForm<CreateProductFormValues>({
         defaultValues: {
             code: '',
@@ -26,18 +45,93 @@ export const CreateProductForm = () => {
         resolver: zodResolver(createProductFormSchema),
     });
 
+    const convertHeicToJpeg = async (file: File) => {
+        try {
+            const blob = await heic2any({
+                blob: file,
+                toType: 'image/jpeg',
+                quality: 0.8,
+            });
+
+            const convertedBlob = Array.isArray(blob) ? blob[0] : blob;
+
+            return new File([convertedBlob], file.name.replace('.heic', '.jpg'), {
+                type: 'image/jpeg',
+            });
+        } catch (error) {
+            console.error('HEIC Conversion error:', error);
+            return file;
+        }
+    };
+
+    const handleImageUpload = async (file: File) => {
+        if (!file) return;
+
+        const options = {
+            maxSizeMB: 0.2,
+            maxWidthOrHeight: 800,
+            useWebWorker: true,
+        };
+
+        try {
+            const compressedFile = await imageCompression(file, options);
+            return compressedFile;
+        } catch (error) {
+            console.error('Image Compression error', error);
+            return file;
+        }
+    };
+
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+        onDrop: async (acceptedFiles) => {
+            let completedFile: File | undefined = acceptedFiles[0];
+            if (completedFile.type.includes('heic')) {
+                setIsImageUploading(true);
+                completedFile = await convertHeicToJpeg(completedFile);
+
+                setIsImageUploading(false);
+            }
+            setIsImageUploading(true);
+            completedFile = await handleImageUpload(completedFile);
+            setFile(completedFile);
+            setIsImageUploading(false);
+        },
+        accept: {
+            'image/jpeg': [],
+            'image/png': [],
+            'image/heic': [],
+        },
+        multiple: false,
+        disabled: isImageUploading,
+    });
+
     const [createProduct, { isLoading }] = useCreateProductMutation();
+    const [updateProductImage, { isLoading: isUploadImagetLoading }] =
+        useUpdateProductImageMutation();
     const { data, isLoading: isGetLoading } = useGetProductCategoriesQuery({});
 
     const onSubmit: SubmitHandler<CreateProductFormValues> = (formValues) => {
+        const formData = new FormData();
+        formData.append('image', file as Blob, (file as File).name);
         createProduct({ createProductDto: formValues as CreateProductDto })
             .unwrap()
-            .then(() => form.reset());
+            .then((res) => {
+                updateProductImage({ id: res.id, body: formData as unknown as { image?: Blob } })
+                    .unwrap()
+                    .then(() => {
+                        form.reset();
+                        setFile(undefined);
+                    });
+            });
+    };
+
+    const deleteUploadedFile = () => {
+        setFile(undefined);
     };
 
     return (
         <>
-            {isLoading || (isGetLoading && <Loader />)}
+            {isLoading || isGetLoading || (isUploadImagetLoading && <Loader />)}
             <Box
                 sx={{
                     display: 'flex',
@@ -55,6 +149,109 @@ export const CreateProductForm = () => {
                         onSubmit={form.handleSubmit(onSubmit)}
                     >
                         <Grid2 container spacing={2}>
+                            <Grid2 size={12}>
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: 2,
+                                        width: '100%',
+                                        height: 250,
+                                    }}
+                                >
+                                    <Box
+                                        {...getRootProps()}
+                                        sx={{
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            border: '2px dashed',
+                                            borderColor: 'divider',
+                                            background: 'white',
+                                            borderRadius: 1,
+                                            p: 2,
+                                            cursor: 'pointer',
+                                            textAlign: 'center',
+                                            flex: 1,
+                                            height: 250,
+                                            transition: '0.3s',
+                                            '&:hover': {
+                                                backgroundColor: 'background.default',
+                                                borderColor: 'primary.main',
+                                            },
+                                            opacity: isImageUploading ? 0.5 : 1,
+                                        }}
+                                    >
+                                        <input {...getInputProps()} />
+                                        {isImageUploading ? (
+                                            <CircularProgress color="inherit" size={30} />
+                                        ) : (
+                                            <Typography variant="h6" fontWeight="normal">
+                                                {isDragActive
+                                                    ? 'Drop the file here...'
+                                                    : 'Click or drag file to this area to upload'}
+                                            </Typography>
+                                        )}
+                                    </Box>
+                                    {file && (
+                                        <Box
+                                            sx={{
+                                                flex: 1,
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                height: '100%',
+                                                position: 'relative',
+                                                border: '2px',
+                                                borderStyle: 'dashed',
+                                                borderColor: 'divider',
+                                                borderRadius: 1,
+                                                padding: 1,
+                                                transition: '0.3s',
+                                                ':hover': {
+                                                    borderColor: 'primary.main',
+                                                    backgroundColor: 'background.default',
+                                                    '& .image-delete-button': {
+                                                        visibility: 'visible',
+                                                    },
+                                                },
+                                            }}
+                                        >
+                                            <CardMedia
+                                                component="img"
+                                                src={URL.createObjectURL(file)}
+                                                sx={{
+                                                    maxWidth: '100%',
+                                                    maxHeight: '100%',
+                                                    objectFit: 'scale-down',
+                                                    borderRadius: 1,
+                                                }}
+                                            />
+                                            <IconButton
+                                                className="image-delete-button"
+                                                size="small"
+                                                sx={{
+                                                    position: 'absolute',
+                                                    right: '5px',
+                                                    top: '5px',
+                                                    zIndex: 10,
+                                                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                                    color: '#fff',
+                                                    boxShadow: '0 0 4px rgba(0,0,0,0.5)',
+                                                    '&:hover': {
+                                                        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                                                    },
+                                                    visibility: 'hidden',
+                                                }}
+                                                onClick={deleteUploadedFile}
+                                            >
+                                                <CloseIcon />
+                                            </IconButton>
+                                        </Box>
+                                    )}
+                                </Box>
+                            </Grid2>
                             <Grid2 size={12}>
                                 <InputController
                                     fullWidth
@@ -96,7 +293,7 @@ export const CreateProductForm = () => {
                                 <AutocompleteController
                                     loading={isGetLoading}
                                     options={data ? data.items : []}
-                                    getOptionLabel={(option) => `${option.title}, ${option.code}`}
+                                    getOptionLabel={(option) => `${option.title} - ${option.code}`}
                                     name="categoryId"
                                     label="Category Id"
                                     placeholder="Category Id"
@@ -104,7 +301,12 @@ export const CreateProductForm = () => {
                             </Grid2>
                         </Grid2>
                         <Button
-                            disabled={isLoading || isGetLoading}
+                            disabled={
+                                isLoading ||
+                                isGetLoading ||
+                                isImageUploading ||
+                                isUploadImagetLoading
+                            }
                             variant="contained"
                             color="primary"
                             fullWidth
