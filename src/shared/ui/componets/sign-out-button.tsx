@@ -1,6 +1,6 @@
+import LogoutIcon from '@mui/icons-material/Logout';
 import { Button, Typography } from '@mui/material';
 import { useNavigate } from '@tanstack/react-router';
-import { ImExit } from 'react-icons/im';
 import { StorageKeys, storage } from '~shared/lib/storage';
 
 interface IProps {
@@ -27,7 +27,7 @@ export const SignOutButton = ({ isInDrawer }: IProps) => {
             }}
             onClick={handleSignOut}
         >
-            <ImExit size={20} />
+            <LogoutIcon fontSize="medium" />
             <Typography variant="body1" fontWeight="bold">
                 Sign Out
             </Typography>

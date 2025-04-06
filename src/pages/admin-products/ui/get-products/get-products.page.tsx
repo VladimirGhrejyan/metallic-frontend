@@ -1,7 +1,7 @@
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { Box, Button, Typography } from '@mui/material';
 import { useNavigate } from '@tanstack/react-router';
 import { ChangeEvent, MouseEvent, useCallback, useMemo, useState } from 'react';
-import { FiPlus } from 'react-icons/fi';
 import { useGetProductsQuery } from '~entities/product';
 import { ProductsFilters, ProductsTable } from '~features/admin-products';
 import { Loader, PageHeader } from '~shared/ui/componets';
@@ -61,7 +61,7 @@ export const GetProductsPage = () => {
 
     const onFiltersSubmit = useCallback(
         (values: Pick<TProductsQueryArgs, 'categoryId' | 'sortBy' | 'order'>) => {
-            setQueryArgs((prev) => ({ ...prev, ...values }));
+            setQueryArgs((prev) => ({ ...prev, ...values, page: '0' }));
         },
         [setQueryArgs],
     );
@@ -92,7 +92,7 @@ export const GetProductsPage = () => {
                     variant="outlined"
                     sx={{ gap: 1, color: 'primary.main', borderRadius: 1 }}
                 >
-                    <FiPlus size={20} />
+                    <AddCircleOutlineIcon fontSize="medium" />
                     <Typography variant="body1" fontWeight="bold">
                         New Product
                     </Typography>

@@ -1,8 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { Box, Button, Container, Grid2, IconButton, Typography } from '@mui/material';
 import { FC, useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import { useSignInMutation } from '~entities/auth';
 import { InputController } from '~shared/ui/controllers/input-controller';
 import { MuiCustomLink } from '~shared/ui/overrides/mui-link';
@@ -78,9 +79,9 @@ export const SignInForm: FC = () => {
                                             endAdornment: (
                                                 <IconButton onClick={toggleShowPassword}>
                                                     {showPassword ? (
-                                                        <FaRegEyeSlash size={20} />
+                                                        <VisibilityOffIcon fontSize="medium" />
                                                     ) : (
-                                                        <FaRegEye size={20} />
+                                                        <VisibilityIcon fontSize="medium" />
                                                     )}
                                                 </IconButton>
                                             ),

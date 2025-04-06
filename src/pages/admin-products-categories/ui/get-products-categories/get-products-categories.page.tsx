@@ -1,7 +1,7 @@
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { Box, Button, Typography } from '@mui/material';
 import { useNavigate } from '@tanstack/react-router';
 import { useCallback, useMemo, useState } from 'react';
-import { FiPlus } from 'react-icons/fi';
 import { useGetProductCategoriesQuery } from '~entities/product-category';
 import {
     ProductsCategoriesFilters,
@@ -63,14 +63,20 @@ export const GetProductsCategoriesPage = () => {
 
     return (
         <Box display="flex" flexDirection="column" gap={2}>
-            <Box display="flex" justifyContent="space-between" flexWrap="wrap" gap={2}>
+            <Box
+                display="flex"
+                justifyContent="space-between"
+                flexWrap="wrap"
+                gap={2}
+                alignItems="center"
+            >
                 <PageHeader pageTitle="Products Categories" />
                 <Button
                     onClick={() => navigate({ to: '/admin/products-categories/create' })}
                     variant="outlined"
                     sx={{ gap: 1, color: 'primary.main', borderRadius: 1 }}
                 >
-                    <FiPlus size={20} />
+                    <AddCircleOutlineIcon fontSize="medium" />
                     <Typography variant="body1" fontWeight="bold">
                         New Category
                     </Typography>

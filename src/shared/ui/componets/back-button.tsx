@@ -1,6 +1,6 @@
+import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import { Box, IconButton, Typography } from '@mui/material';
 import { useRouter } from '@tanstack/react-router';
-import { IoReturnDownBackSharp } from 'react-icons/io5';
 
 export const BackButton = () => {
     const router = useRouter();
@@ -14,7 +14,7 @@ export const BackButton = () => {
                     borderRadius: 1,
                 }}
             >
-                <IoReturnDownBackSharp />
+                <KeyboardReturnIcon />
                 <Typography variant="body1" fontWeight="bold">
                     Back
                 </Typography>

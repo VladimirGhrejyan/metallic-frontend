@@ -1,9 +1,9 @@
+import FilterListIcon from '@mui/icons-material/FilterList';
 import { Box } from '@mui/material';
 import Button from '@mui/material/Button';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import { FC, MouseEvent, ReactNode, useState } from 'react';
-import { IoFilterSharp } from 'react-icons/io5';
 
 interface IProps {
     children: ReactNode;
@@ -38,7 +38,7 @@ export const FiltersPopover: FC<IProps> = ({ children }) => {
                 }}
                 onClick={handleClick}
             >
-                <IoFilterSharp size={20} />
+                <FilterListIcon fontSize="medium" />
                 <Typography variant="body1" fontWeight="bold">
                     Filters
                 </Typography>
