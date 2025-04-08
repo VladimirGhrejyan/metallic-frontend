@@ -1,4 +1,3 @@
-import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import {
     IconButton,
@@ -14,7 +13,7 @@ import {
 } from '@mui/material';
 import { useNavigate } from '@tanstack/react-router';
 import { ChangeEvent, FC, MouseEvent } from 'react';
-import { GetProductsApiResponse, useDeleteProductMutation } from '~entities/product';
+import { GetProductsApiResponse } from '~entities/product';
 import { calculateTotalPrice } from '~shared/helpers';
 import { NoData } from '~shared/ui/componets';
 
@@ -43,14 +42,12 @@ export const ProductsTable: FC<IProps> = ({
     const { items, meta } = data;
     const navigate = useNavigate();
 
-    const [deleteProduct, { isLoading }] = useDeleteProductMutation();
-
     return (
         <Paper
             sx={{
                 width: '100%',
                 overflow: 'hidden',
-                opacity: isDisabled || isLoading ? '0.7' : 1,
+                opacity: isDisabled ? '0.7' : 1,
             }}
         >
             <TableContainer>
@@ -98,7 +95,7 @@ export const ProductsTable: FC<IProps> = ({
                                     </TableCell>
                                     <TableCell sx={{ whiteSpace: 'nowrap', textAlign: 'center' }}>
                                         <IconButton
-                                            disabled={isDisabled || isLoading}
+                                            disabled={isDisabled}
                                             onClick={() =>
                                                 navigate({
                                                     to: `/admin/products/${row.id}/edit`,
@@ -109,16 +106,6 @@ export const ProductsTable: FC<IProps> = ({
                                         >
                                             <EditIcon />
                                         </IconButton>
-                                        <IconButton
-                                            disabled={isDisabled || isLoading}
-                                            onClick={() => {
-                                                deleteProduct({ id: row.id });
-                                            }}
-                                            color="error"
-                                            size="small"
-                                        >
-                                            <DeleteIcon />
-                                        </IconButton>
                                     </TableCell>
                                 </TableRow>
                             ))
@@ -127,7 +114,7 @@ export const ProductsTable: FC<IProps> = ({
                         )}
                     </TableBody>
                     <TablePagination
-                        disabled={isDisabled || isLoading}
+                        disabled={isDisabled}
                         count={meta.totalItems}
                         page={page}
                         rowsPerPage={meta.itemsPerPage}
