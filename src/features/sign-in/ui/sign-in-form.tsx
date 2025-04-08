@@ -31,7 +31,12 @@ export const SignInForm: FC = () => {
     const [signIn] = useSignInMutation();
 
     const onSubmit: SubmitHandler<SignInFormValues> = (formValues) => {
-        signIn({ signInInputDto: { email: formValues.email, password: formValues.password } });
+        signIn({
+            signInInputDto: {
+                email: formValues.email.toLowerCase(),
+                password: formValues.password,
+            },
+        });
     };
 
     return (

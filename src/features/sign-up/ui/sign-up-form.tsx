@@ -31,7 +31,12 @@ export const SignUpForm: FC = () => {
     const [signUp] = useSignUpMutation();
 
     const onSubmit: SubmitHandler<SignUpFormValues> = async (formValues) => {
-        signUp({ signUpInputDto: { email: formValues.email, password: formValues.password } });
+        signUp({
+            signUpInputDto: {
+                email: formValues.email.toLowerCase(),
+                password: formValues.password,
+            },
+        });
     };
 
     return (
