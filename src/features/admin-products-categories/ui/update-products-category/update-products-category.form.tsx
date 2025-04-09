@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, Grid2 } from '@mui/material';
+import { FC } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import {
     GetProductCategoryByIdApiResponse,
@@ -18,7 +19,7 @@ interface IProps {
     data: GetProductCategoryByIdApiResponse;
 }
 
-export const UpdateProductCategoryForm = ({ data }: IProps) => {
+export const UpdateProductCategoryForm: FC<IProps> = ({ data }) => {
     const form = useForm<UpdateProductCategoryFormValues>({
         defaultValues: {
             code: data.code,
