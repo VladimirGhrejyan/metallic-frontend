@@ -76,7 +76,19 @@ export const ProductsTable: FC<IProps> = ({
                     <TableBody>
                         {items.length ? (
                             items.map((row) => (
-                                <TableRow key={row.id}>
+                                <TableRow
+                                    key={row.id}
+                                    onClick={() =>
+                                        navigate({ to: `/admin/products/${row.id}/view` })
+                                    }
+                                    sx={{
+                                        transition: '0.3s',
+                                        ':hover': {
+                                            backgroundColor: 'background.default',
+                                            cursor: 'pointer',
+                                        },
+                                    }}
+                                >
                                     <TableCell>
                                         <Typography
                                             sx={{ wordBreak: 'break-all', fontWeight: 'bold' }}
@@ -96,11 +108,12 @@ export const ProductsTable: FC<IProps> = ({
                                     <TableCell sx={{ whiteSpace: 'nowrap', textAlign: 'center' }}>
                                         <IconButton
                                             disabled={isDisabled}
-                                            onClick={() =>
+                                            onClick={(e) => {
+                                                e.stopPropagation();
                                                 navigate({
                                                     to: `/admin/products/${row.id}/edit`,
-                                                })
-                                            }
+                                                });
+                                            }}
                                             color="primary"
                                             size="small"
                                         >

@@ -60,7 +60,21 @@ export const ProductsCategoriesTable: FC<IProps> = ({ data, isDisabled }) => {
                     <TableBody>
                         {items.length ? (
                             items.map((row) => (
-                                <TableRow key={row.id}>
+                                <TableRow
+                                    key={row.id}
+                                    onClick={() =>
+                                        navigate({
+                                            to: `/admin/products-categories/${row.id}/view`,
+                                        })
+                                    }
+                                    sx={{
+                                        transition: '0.3s',
+                                        ':hover': {
+                                            backgroundColor: 'background.default',
+                                            cursor: 'pointer',
+                                        },
+                                    }}
+                                >
                                     <TableCell>
                                         <Typography
                                             sx={{ wordBreak: 'break-all', fontWeight: 'bold' }}
@@ -76,11 +90,12 @@ export const ProductsCategoriesTable: FC<IProps> = ({ data, isDisabled }) => {
                                     <TableCell sx={{ whiteSpace: 'nowrap', textAlign: 'center' }}>
                                         <IconButton
                                             disabled={isDisabled}
-                                            onClick={() =>
+                                            onClick={(e) => {
+                                                e.stopPropagation();
                                                 navigate({
                                                     to: `/admin/products-categories/${row.id}/edit`,
-                                                })
-                                            }
+                                                });
+                                            }}
                                             color="primary"
                                             size="small"
                                         >
