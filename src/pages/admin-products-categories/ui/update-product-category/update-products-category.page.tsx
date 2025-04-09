@@ -1,11 +1,12 @@
 import { Box } from '@mui/material';
+import { FC } from 'react';
 import { productsCategoryUpdateRoute } from '~app/providers/router/config/routes';
 import { useGetProductCategoryByIdQuery } from '~entities/product-category';
 import { UpdateProductCategoryForm } from '~features/admin-products-categories';
 import { Loader } from '~shared/ui/componets';
 import { BackButton } from '~shared/ui/componets/back-button';
 
-export const UpdateProductsCategoryPage = () => {
+export const UpdateProductsCategoryPage: FC = () => {
     const { productCategoryid } = productsCategoryUpdateRoute.useParams();
     const { data } = useGetProductCategoryByIdQuery({ id: Number(productCategoryid) });
 

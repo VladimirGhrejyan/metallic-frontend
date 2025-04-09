@@ -9,7 +9,7 @@ import {
     IconButton,
     Typography,
 } from '@mui/material';
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import {
@@ -30,7 +30,7 @@ import { CreateProductFormValues } from '../../model/create-product/form.types';
 
 const { CREATE } = createProductConstants.TEXTS;
 
-export const CreateProductForm = () => {
+export const CreateProductForm: FC = () => {
     const [file, setFile] = useState<File | undefined>(undefined);
     const [isImageUploading, setIsImageUploading] = useState<boolean>(false);
     const form = useForm<CreateProductFormValues>({

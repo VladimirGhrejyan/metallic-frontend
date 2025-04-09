@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, CardMedia, CircularProgress, Grid2, Typography } from '@mui/material';
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { useUpdateProductMutation } from '~entities/product';
@@ -25,7 +25,7 @@ interface IProps {
     data: GetProductByIdApiResponse;
 }
 
-export const UpdateProductForm = ({ data }: IProps) => {
+export const UpdateProductForm: FC<IProps> = ({ data }) => {
     const [file, setFile] = useState<File | string>(data.image ? data.image.url : '');
     const [isImageUploading, setIsImageUploading] = useState<boolean>(false);
 
@@ -202,7 +202,6 @@ export const UpdateProductForm = ({ data }: IProps) => {
                                     variant="outlined"
                                 />
                             </Grid2>
-
                             <Grid2 size={12}>
                                 <InputController
                                     fullWidth

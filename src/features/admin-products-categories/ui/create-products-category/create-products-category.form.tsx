@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, Grid2 } from '@mui/material';
+import { FC } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { useCreateProductCategoryMutation } from '~entities/product-category';
 import { Loader, PageHeader } from '~shared/ui/componets';
@@ -11,7 +12,7 @@ import { CreateProductCategoryFormValues } from '../../model/create-category/for
 
 const { CREATE } = createProductCategoryFormConstants.TEXTS;
 
-export const CreateProductsCategoryForm = () => {
+export const CreateProductsCategoryForm: FC = () => {
     const form = useForm<CreateProductCategoryFormValues>({
         defaultValues: {
             code: '',

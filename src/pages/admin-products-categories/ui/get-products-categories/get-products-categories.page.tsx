@@ -1,7 +1,7 @@
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { Box, Button, Typography } from '@mui/material';
 import { useNavigate } from '@tanstack/react-router';
-import { useCallback, useMemo, useState } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
 import { useGetProductCategoriesQuery } from '~entities/product-category';
 import {
     ProductsCategoriesFilters,
@@ -14,7 +14,7 @@ import { FiltersPopover } from '~widgets/filters-popover';
 
 import { TProductsCategoriesQueryArgs } from '../../model/get-product-categories/form.types';
 
-export const GetProductsCategoriesPage = () => {
+export const GetProductsCategoriesPage: FC = () => {
     const navigate = useNavigate();
     const [queryArgs, setQueryArgs] = useState<TProductsCategoriesQueryArgs>({});
 

@@ -21,7 +21,7 @@ export const ProductsFilters: FC<IProps> = ({ onFiltersSubmit, onResetFilters, d
         },
     });
 
-    const { data, isLoading } = useGetProductCategoriesQuery({});
+    const { data, isLoading } = useGetProductCategoriesQuery({ order: 'ASC', sortBy: 'code' });
 
     const onSubmit: SubmitHandler<TProductsFiltersFormValues> = (formValues) => {
         const { categoryId, order, sortBy } = formValues;
