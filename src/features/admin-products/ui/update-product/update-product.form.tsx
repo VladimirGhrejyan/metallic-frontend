@@ -67,9 +67,10 @@ export const UpdateProductForm: FC<IProps> = ({ data }) => {
     const [updateProduct, { isLoading }] = useUpdateProductMutation();
     const [updateProductImage, { isLoading: isUploadImagetLoading }] =
         useUpdateProductImageMutation();
-    const { data: productCategoriesList, isLoading: isGetLoading } = useGetProductCategoriesQuery(
-        {},
-    );
+    const { data: productCategoriesList, isLoading: isGetLoading } = useGetProductCategoriesQuery({
+        order: 'ASC',
+        sortBy: 'code',
+    });
 
     const onSubmit: SubmitHandler<UpdateProductFormValues> = (formValues) => {
         const cleanedValues = cleanObjectByKeys(formValues);
