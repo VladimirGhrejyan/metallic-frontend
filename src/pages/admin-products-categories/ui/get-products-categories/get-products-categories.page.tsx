@@ -1,13 +1,14 @@
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { Box, Button, Typography } from '@mui/material';
 import { useNavigate } from '@tanstack/react-router';
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, useCallback, useMemo } from 'react';
+import { productsCategoriesRoute } from '~app/providers/router/config/routes';
 import { useGetProductCategoriesQuery } from '~entities/product-category';
 import {
     ProductsCategoriesFilters,
     ProductsCategoriesTable,
 } from '~features/admin-products-categories';
-import { filterQueryArgs } from '~shared/helpers';
+import { cleanedObject, stringifyObject } from '~shared/helpers';
 import { Loader, PageHeader } from '~shared/ui/componets';
 import { SearchInput } from '~shared/ui/componets/search-input';
 import { FiltersPopover } from '~widgets/filters-popover';
@@ -15,35 +16,40 @@ import { FiltersPopover } from '~widgets/filters-popover';
 import { TProductsCategoriesQueryArgs } from '../../model/get-product-categories/form.types';
 
 export const GetProductsCategoriesPage: FC = () => {
-    const navigate = useNavigate();
-    const [queryArgs, setQueryArgs] = useState<TProductsCategoriesQueryArgs>({});
+    const searchParams = productsCategoriesRoute.useSearch();
+    const navigate = useNavigate({ from: productsCategoriesRoute.fullPath });
 
     const { data, isLoading, isFetching } = useGetProductCategoriesQuery({
-        ...filterQueryArgs(queryArgs),
+        ...stringifyObject(cleanedObject(searchParams)),
     });
 
     const onSearch = useCallback(
         (value: string) => {
-            setQueryArgs({ search: value });
+            navigate({ search: (prev) => ({ ...prev, search: value }) });
         },
-        [setQueryArgs],
+        [navigate],
     );
 
     const onFiltersSubmit = useCallback(
         (values: Omit<TProductsCategoriesQueryArgs, 'search'>) => {
-            setQueryArgs((prev) => ({ ...prev, ...values }));
+            navigate({ search: (prev) => ({ ...prev, ...values }) });
         },
-        [setQueryArgs],
+        [navigate],
     );
 
     const onResetFilters = useCallback(() => {
-        setQueryArgs({});
-    }, [setQueryArgs]);
+        navigate({});
+    }, [navigate]);
 
     const memoizedDefaultFilters: Omit<TProductsCategoriesQueryArgs, 'search'> = useMemo(() => {
-        const { search, ...rest } = filterQueryArgs(queryArgs);
+        const { search, ...rest } = cleanedObject(searchParams);
         return rest;
-    }, [queryArgs]);
+    }, [searchParams]);
+
+    const memoizedDefaultSearchValue: string = useMemo(
+        () => searchParams.search || '',
+        [searchParams],
+    );
 
     if (!data) {
         return <Loader />;
@@ -71,7 +77,7 @@ export const GetProductsCategoriesPage: FC = () => {
                 </Button>
             </Box>
             <Box display="flex" gap={2}>
-                <SearchInput onSearch={onSearch} />
+                <SearchInput onSearch={onSearch} defaultValue={memoizedDefaultSearchValue} />
                 <FiltersPopover>
                     <ProductsCategoriesFilters
                         defaultValues={memoizedDefaultFilters}

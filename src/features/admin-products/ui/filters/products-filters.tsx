@@ -3,12 +3,12 @@ import { FC } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { useGetProductCategoriesQuery } from '~entities/product-category';
 import { TProductsFiltersFormValues } from '~features/admin-products/model/filters/form.types';
-import { TProductsQueryArgs } from '~pages/admin-products/model/get-products/admin-products.types';
+import { IProductsQueryArgs } from '~pages/admin-products/model/get-products/admin-products.types';
 import { AutocompleteController } from '~shared/ui/controllers/input-controller/autocomplete-controller';
 
 interface IProps {
-    defaultValues: Omit<TProductsQueryArgs, 'itemsPerPage' | 'page' | 'search'>;
-    onFiltersSubmit: (values: Pick<TProductsQueryArgs, 'categoryId' | 'sortBy' | 'order'>) => void;
+    defaultValues: Omit<IProductsQueryArgs, 'itemsPerPage' | 'page' | 'search'>;
+    onFiltersSubmit: (values: Pick<IProductsQueryArgs, 'categoryId' | 'sortBy' | 'order'>) => void;
     onResetFilters: () => void;
 }
 
@@ -26,7 +26,7 @@ export const ProductsFilters: FC<IProps> = ({ onFiltersSubmit, onResetFilters, d
     const onSubmit: SubmitHandler<TProductsFiltersFormValues> = (formValues) => {
         const { categoryId, order, sortBy } = formValues;
 
-        const filteredValues: Pick<TProductsQueryArgs, 'categoryId' | 'sortBy' | 'order'> = {
+        const filteredValues: Pick<IProductsQueryArgs, 'categoryId' | 'sortBy' | 'order'> = {
             ...(categoryId !== undefined && { categoryId }),
             ...(order !== undefined && { order }),
             ...(sortBy !== undefined && { sortBy }),
