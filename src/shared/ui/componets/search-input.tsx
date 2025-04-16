@@ -3,9 +3,10 @@ import { FC, useMemo } from 'react';
 
 interface IProps {
     onSearch: (value: string) => void;
+    defaultValue: string;
 }
 
-export const SearchInput: FC<IProps> = ({ onSearch }) => {
+export const SearchInput: FC<IProps> = ({ onSearch, defaultValue = '' }) => {
     const debouncedSetValue = useMemo(
         () =>
             debounce((value: string) => {
@@ -16,6 +17,7 @@ export const SearchInput: FC<IProps> = ({ onSearch }) => {
 
     return (
         <TextField
+            defaultValue={defaultValue}
             fullWidth
             variant="outlined"
             size="small"

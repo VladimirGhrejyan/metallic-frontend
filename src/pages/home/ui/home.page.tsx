@@ -1,29 +1,30 @@
 import { Box, TablePagination } from '@mui/material';
-import { ChangeEvent, MouseEvent, useCallback, useMemo, useState } from 'react';
+import { useNavigate } from '@tanstack/react-router';
+import { ChangeEvent, MouseEvent, useCallback, useMemo } from 'react';
+import { homeRoute } from '~app/providers/router/config/routes';
 import { useGetProductsQuery } from '~entities/product';
 import { ProductsFilters } from '~features/admin-products';
 import { ProductsSection } from '~features/home';
-import { TProductsQueryArgs } from '~pages/admin-products/model/get-products/admin-products.types';
-import { filterQueryArgs } from '~shared/helpers';
+import { IProductsQueryArgs } from '~pages/admin-products/model/get-products/admin-products.types';
+import { defaultRowsPerPageOptions, minimumPage } from '~shared/constants';
+import { cleanedObject, stringifyObject } from '~shared/helpers';
 import { Loader, PageHeader } from '~shared/ui/componets';
 import { SearchInput } from '~shared/ui/componets/search-input';
 import { FiltersPopover } from '~widgets/filters-popover';
 
 export const HomePage = () => {
-    const [queryArgs, setQueryArgs] = useState<TProductsQueryArgs>({
-        page: '0',
-        itemsPerPage: '10',
-    });
+    const searchParams = homeRoute.useSearch();
+    const navigate = useNavigate({ from: homeRoute.fullPath });
 
     const { data } = useGetProductsQuery({
-        ...filterQueryArgs(queryArgs, true),
+        ...stringifyObject(cleanedObject(searchParams)),
     });
 
     const onSearch = useCallback(
         (value: string) => {
-            setQueryArgs((prev) => ({ ...prev, search: value, page: '0' }));
+            navigate({ search: (prev) => ({ ...prev, search: value, page: minimumPage }) });
         },
-        [setQueryArgs],
+        [navigate],
     );
 
     const onPageChange = useCallback(
@@ -31,37 +32,60 @@ export const HomePage = () => {
             _: MouseEvent<HTMLElement> | MouseEvent<HTMLButtonElement, MouseEvent> | null,
             newPage: number,
         ) => {
-            setQueryArgs((prev) => ({ ...prev, page: String(newPage) }));
+            navigate({ search: (prev) => ({ ...prev, page: newPage + 1 }) });
         },
-        [setQueryArgs],
+        [navigate],
     );
 
     const onRowsPerPageChange = useCallback(
         (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | undefined) => {
-            setQueryArgs((prev) => ({ ...prev, itemsPerPage: event?.target.value, page: '0' }));
+            navigate({
+                search: (prev) => ({
+                    ...prev,
+                    itemsPerPage: Number(event?.target.value),
+                    page: minimumPage,
+                }),
+            });
         },
-        [setQueryArgs],
+        [navigate],
     );
 
     const onFiltersSubmit = useCallback(
-        (values: Pick<TProductsQueryArgs, 'categoryId' | 'sortBy' | 'order'>) => {
-            setQueryArgs((prev) => ({ ...prev, ...values, page: '0' }));
+        (values: Pick<IProductsQueryArgs, 'categoryId' | 'sortBy' | 'order'>) => {
+            navigate({ search: (prev) => ({ ...prev, ...values, page: minimumPage }) });
         },
-        [setQueryArgs],
+        [navigate],
     );
 
     const onResetFilters = useCallback(() => {
-        setQueryArgs((prev) => {
-            const { categoryId, order, sortBy, ...rest } = prev;
-            return rest;
+        navigate({
+            search: (prev: IProductsQueryArgs) => {
+                const { categoryId, order, sortBy, ...rest } = prev;
+                return rest;
+            },
         });
-    }, [setQueryArgs]);
+    }, [navigate]);
 
-    const memoizedDefaultFilters: Omit<TProductsQueryArgs, 'itemsPerPage' | 'page' | 'search'> =
+    const memoizedDefaultFilters: Omit<IProductsQueryArgs, 'itemsPerPage' | 'page' | 'search'> =
         useMemo(() => {
-            const { itemsPerPage, page, search, ...rest } = filterQueryArgs(queryArgs);
+            const { itemsPerPage, page, search, ...rest } = cleanedObject(searchParams);
             return rest;
-        }, [queryArgs]);
+        }, [searchParams]);
+
+    const memoizedDefaultSearchValue: string = useMemo(
+        () => searchParams.search || '',
+        [searchParams],
+    );
+
+    const rowsPerPageOptions = useMemo(() => {
+        if (
+            searchParams.itemsPerPage &&
+            !defaultRowsPerPageOptions.includes(searchParams.itemsPerPage)
+        ) {
+            return [...defaultRowsPerPageOptions, searchParams.itemsPerPage].sort((a, b) => a - b);
+        }
+        return defaultRowsPerPageOptions;
+    }, [searchParams]);
 
     if (!data) {
         return <Loader />;
@@ -78,7 +102,7 @@ export const HomePage = () => {
         >
             <PageHeader pageTitle="Dashboard" />
             <Box display="flex" gap={2}>
-                <SearchInput onSearch={onSearch} />
+                <SearchInput onSearch={onSearch} defaultValue={memoizedDefaultSearchValue} />
                 <FiltersPopover>
                     <ProductsFilters
                         defaultValues={memoizedDefaultFilters}
@@ -91,10 +115,10 @@ export const HomePage = () => {
             <TablePagination
                 component="div"
                 count={data.meta.totalItems}
-                page={Number(queryArgs.page) || 0}
+                page={searchParams.page ? searchParams.page - 1 : minimumPage - 1}
                 rowsPerPage={data.meta.itemsPerPage}
                 onPageChange={onPageChange}
-                rowsPerPageOptions={[5, 10, 25, 50, 100]}
+                rowsPerPageOptions={rowsPerPageOptions}
                 onRowsPerPageChange={onRowsPerPageChange}
                 sx={{
                     position: 'fixed',
