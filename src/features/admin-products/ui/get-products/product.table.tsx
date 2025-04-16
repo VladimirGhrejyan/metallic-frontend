@@ -13,8 +13,10 @@ import {
     Typography,
 } from '@mui/material';
 import { useNavigate } from '@tanstack/react-router';
-import { ChangeEvent, FC, MouseEvent, useCallback, useState } from 'react';
+import { ChangeEvent, FC, MouseEvent, useCallback, useMemo, useState } from 'react';
+import { productsRoute } from '~app/providers/router/config/routes';
 import { GetProductsApiResponse, useDeleteProductMutation } from '~entities/product';
+import { defaultRowsPerPageOptions } from '~shared/constants';
 import { calculateTotalPrice } from '~shared/helpers';
 import { NoData } from '~shared/ui/componets';
 import { ConfirmationModal } from '~shared/ui/modals';
@@ -41,6 +43,7 @@ export const ProductsTable: FC<IProps> = ({
     page,
     onRowsPerPageChange,
 }) => {
+    const searchParams = productsRoute.useSearch();
     const { items, meta } = data;
     const navigate = useNavigate();
     const [confirmationModal, setConfirmationModal] = useState<boolean>(false);
@@ -70,6 +73,16 @@ export const ProductsTable: FC<IProps> = ({
         setConfirmationModal(true);
         setDeletionId(id);
     };
+
+    const rowsPerPageOptions = useMemo(() => {
+        if (
+            searchParams.itemsPerPage &&
+            !defaultRowsPerPageOptions.includes(searchParams.itemsPerPage)
+        ) {
+            return [...defaultRowsPerPageOptions, searchParams.itemsPerPage].sort((a, b) => a - b);
+        }
+        return defaultRowsPerPageOptions;
+    }, [searchParams]);
 
     return (
         <Paper
@@ -164,7 +177,7 @@ export const ProductsTable: FC<IProps> = ({
                         page={page}
                         rowsPerPage={meta.itemsPerPage}
                         onPageChange={onPageChange}
-                        rowsPerPageOptions={[5, 10, 25, 50, 100]}
+                        rowsPerPageOptions={rowsPerPageOptions}
                         onRowsPerPageChange={onRowsPerPageChange}
                     />
                 </Table>

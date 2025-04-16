@@ -11,7 +11,7 @@ export const ProductsSection = ({ data }: IProps) => {
         <Box sx={{ flexGrow: 1 }}>
             <Grid2 container spacing={4}>
                 {data.map((product) => (
-                    <Grid2 key={product.code}>
+                    <Grid2 key={product.code} size={{ xs: 12, sm: 4, md: 4, lg: 3, xl: 4 }}>
                         <ProductCard product={product} />
                     </Grid2>
                 ))}
