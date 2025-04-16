@@ -16,8 +16,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             <Card
                 onClick={() => navigate({ to: `/admin/products/${product.id}/edit` })}
                 sx={{
-                    width: 300,
-                    height: 320,
+                    height: 350,
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
@@ -42,13 +41,21 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                         backgroundColor: 'background.default',
                     }}
                 />
-                <CardContent sx={{ px: 0, py: 1 }}>
+                <CardContent
+                    sx={{
+                        px: 0,
+                        py: 1,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'flex-start',
+                    }}
+                >
                     <Typography
                         fontWeight="bold"
                         sx={{
                             overflow: 'hidden',
                             display: '-webkit-box',
-                            WebkitLineClamp: 1,
+                            WebkitLineClamp: 2,
                             WebkitBoxOrient: 'vertical',
                             textOverflow: 'ellipsis',
                         }}
