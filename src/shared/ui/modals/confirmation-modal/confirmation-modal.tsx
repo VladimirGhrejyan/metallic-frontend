@@ -28,6 +28,7 @@ export const ConfirmationModal: FC<IProps> = ({
     return (
         <Dialog open={open} onClose={onClose} maxWidth={'xs'} fullWidth>
             <DialogTitle
+                component={'div'}
                 sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
             >
                 <Typography variant="h5" fontWeight="bold">
