@@ -1,6 +1,6 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Box, Button, Typography } from '@mui/material';
-import { useNavigate } from '@tanstack/react-router';
+import { useRouter } from '@tanstack/react-router';
 import { useCallback, useState } from 'react';
 import { productUpdateRoute } from '~app/providers/router/config/routes/product-update.route';
 import { useDeleteProductMutation, useGetProductByIdQuery } from '~entities/product';
@@ -10,9 +10,10 @@ import { BackButton } from '~shared/ui/componets/back-button';
 import { ConfirmationModal } from '~shared/ui/modals';
 
 export const UpdateProductPage = () => {
-    const navigate = useNavigate();
+    const router = useRouter();
     const [confirmationModal, setConfirmationModal] = useState<boolean>(false);
     const { productId } = productUpdateRoute.useParams();
+    const { referrer } = productUpdateRoute.useSearch();
     const { data } = useGetProductByIdQuery({ id: Number(productId) });
 
     const [deleteProduct, { isLoading }] = useDeleteProductMutation();
@@ -20,10 +21,14 @@ export const UpdateProductPage = () => {
     const deletionAction = useCallback(
         async (id: number) => {
             deleteProduct({ id });
-            navigate({ to: '/admin/products' });
             setConfirmationModal(false);
+            if (referrer === 'view') {
+                router.navigate({ to: '/' });
+            } else {
+                router.history.back();
+            }
         },
-        [deleteProduct, navigate],
+        [deleteProduct, router, referrer],
     );
 
     if (!data) {

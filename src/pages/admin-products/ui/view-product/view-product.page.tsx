@@ -2,13 +2,13 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Box, Button, Typography } from '@mui/material';
 import { useNavigate } from '@tanstack/react-router';
 import { FC } from 'react';
-import { productViewRoute } from '~app/providers/router/config/routes';
+import { productUpdateRoute, productViewRoute } from '~app/providers/router/config/routes';
 import { useGetProductByIdQuery } from '~entities/product';
 import { ViewProductForm } from '~features/admin-products';
 import { BackButton, Loader } from '~shared/ui/componets';
 
 export const ViewProductPage: FC = () => {
-    const navigate = useNavigate();
+    const navigate = useNavigate({ from: productUpdateRoute.fullPath });
     const { productId } = productViewRoute.useParams();
     const { data } = useGetProductByIdQuery({ id: Number(productId) });
 
@@ -21,7 +21,12 @@ export const ViewProductPage: FC = () => {
             <Box display="flex" justifyContent="space-between">
                 <BackButton />
                 <Button
-                    onClick={() => navigate({ to: `/admin/products/${productId}/edit` })}
+                    onClick={() =>
+                        navigate({
+                            to: `/admin/products/${productId}/edit`,
+                            search: { referrer: 'view' },
+                        })
+                    }
                     variant="outlined"
                     sx={{ gap: 1, color: 'primary.main', borderRadius: 1 }}
                 >
