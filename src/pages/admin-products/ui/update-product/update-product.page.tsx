@@ -5,8 +5,8 @@ import { useCallback, useState } from 'react';
 import { productUpdateRoute } from '~app/providers/router/config/routes/product-update.route';
 import { useDeleteProductMutation, useGetProductByIdQuery } from '~entities/product';
 import { UpdateProductForm } from '~features/admin-products';
-import { Loader } from '~shared/ui/componets';
-import { BackButton } from '~shared/ui/componets/back-button';
+import { Loader } from '~shared/ui/components';
+import { BackButton } from '~shared/ui/components/back-button';
 import { ConfirmationModal } from '~shared/ui/modals';
 
 export const UpdateProductPage = () => {

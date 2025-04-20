@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { Outlet } from '@tanstack/react-router';
-import { GlobalSnackbar } from '~shared/ui/componets/snackbar';
+import { GlobalSnackbar } from '~shared/ui/components/snackbar';
 
 export const RootLayout = () => {
     return (

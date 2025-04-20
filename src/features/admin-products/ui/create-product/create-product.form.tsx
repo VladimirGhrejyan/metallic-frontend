@@ -19,7 +19,7 @@ import {
 } from '~entities/product';
 import { useGetProductCategoriesQuery } from '~entities/product-category';
 import { cleanObjectByKeys, compressImage, convertHeicToJpeg } from '~shared/helpers';
-import { Loader, PageHeader } from '~shared/ui/componets';
+import { Loader, PageHeader } from '~shared/ui/components';
 import { InputController } from '~shared/ui/controllers/input-controller';
 import { AutocompleteController } from '~shared/ui/controllers/input-controller/autocomplete-controller';
 import { InputNumberController } from '~shared/ui/controllers/input-controller/number-input.controller';

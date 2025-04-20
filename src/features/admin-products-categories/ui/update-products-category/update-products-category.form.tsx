@@ -6,7 +6,7 @@ import {
     GetProductCategoryByIdApiResponse,
     useUpdateProductCategoryMutation,
 } from '~entities/product-category';
-import { Loader, PageHeader } from '~shared/ui/componets';
+import { Loader, PageHeader } from '~shared/ui/components';
 import { InputController } from '~shared/ui/controllers/input-controller';
 
 import { updateProductCategoryFormConstants } from '../../model/update-category/form.constants';

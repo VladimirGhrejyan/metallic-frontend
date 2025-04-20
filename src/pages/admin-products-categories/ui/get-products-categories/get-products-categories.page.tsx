@@ -9,8 +9,8 @@ import {
     ProductsCategoriesTable,
 } from '~features/admin-products-categories';
 import { cleanedObject, stringifyObject } from '~shared/helpers';
-import { Loader, PageHeader } from '~shared/ui/componets';
-import { SearchInput } from '~shared/ui/componets/search-input';
+import { Loader, PageHeader } from '~shared/ui/components';
+import { SearchInput } from '~shared/ui/components/search-input';
 import { FiltersPopover } from '~widgets/filters-popover';
 
 import { TProductsCategoriesQueryArgs } from '../../model/get-product-categories/form.types';

@@ -18,7 +18,7 @@ import { productsRoute } from '~app/providers/router/config/routes';
 import { GetProductsApiResponse, useDeleteProductMutation } from '~entities/product';
 import { defaultRowsPerPageOptions } from '~shared/constants';
 import { calculateTotalPrice } from '~shared/helpers';
-import { NoData } from '~shared/ui/componets';
+import { NoData } from '~shared/ui/components';
 import { ConfirmationModal } from '~shared/ui/modals';
 
 import { tableHeaderRows } from '../../model/get-products/table.constants';
