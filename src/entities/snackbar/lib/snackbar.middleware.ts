@@ -4,11 +4,12 @@ import {
     isFulfilled,
     isRejectedWithValue,
 } from '@reduxjs/toolkit';
+import { EHttpMethods } from '~shared/types/http-methods';
 
+import { hasErrorMessage, hasMethod, isSignInUrl } from '../utils/snackbar.guard';
 import { showSnackbar } from './snackbar-slice';
-import { hasErrorMessage, hasMethod, isSignInUrl } from './utils/toast.guard';
 
-export const toastiMiddleware: Middleware =
+export const snackbarMiddleware: Middleware =
     ({ dispatch }: MiddlewareAPI) =>
     (next) =>
     (action) => {
@@ -22,7 +23,7 @@ export const toastiMiddleware: Middleware =
         }
 
         if (isFulfilled(action)) {
-            if (hasMethod(action, 'PATCH') || hasMethod(action, 'PUT')) {
+            if (hasMethod(action, EHttpMethods.PATCH) || hasMethod(action, EHttpMethods.PUT)) {
                 dispatch(
                     showSnackbar({
                         message: 'Successfully updated',
@@ -31,7 +32,7 @@ export const toastiMiddleware: Middleware =
                 );
             }
 
-            if (hasMethod(action, 'POST')) {
+            if (hasMethod(action, EHttpMethods.POST)) {
                 if (isSignInUrl(action)) {
                     dispatch(
                         showSnackbar({
@@ -49,7 +50,7 @@ export const toastiMiddleware: Middleware =
                 }
             }
 
-            if (hasMethod(action, 'DELETE')) {
+            if (hasMethod(action, EHttpMethods.DELETE)) {
                 dispatch(
                     showSnackbar({
                         message: 'Successfully deleted',

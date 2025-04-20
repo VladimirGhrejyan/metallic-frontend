@@ -4,7 +4,7 @@ import Snackbar from '@mui/material/Snackbar';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '~app/providers/store/config/store';
-import { hideSnackbar } from '~app/providers/store/lib/snackbar-slice';
+import { hideSnackbar } from '~entities/snackbar/lib/snackbar-slice';
 
 export const GlobalSnackbar: React.FC = () => {
     const dispatch = useDispatch();

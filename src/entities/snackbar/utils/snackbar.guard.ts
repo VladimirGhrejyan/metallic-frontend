@@ -1,12 +1,11 @@
 import { UnknownAction } from '@reduxjs/toolkit';
+import { THttpMethods } from '~shared/types/http-methods';
 
 type TErrorPayload = {
     data: {
         message: string;
     };
 };
-
-type TRequestMethod = 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
 export const hasErrorMessage = (
     action: UnknownAction,
@@ -24,7 +23,7 @@ export const hasErrorMessage = (
 
 export const hasMethod = (
     action: UnknownAction,
-    method: TRequestMethod,
+    method: THttpMethods,
 ): action is UnknownAction & { payload: TErrorPayload } => {
     return (
         typeof action.meta === 'object' &&
