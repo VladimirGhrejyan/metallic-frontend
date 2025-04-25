@@ -153,6 +153,7 @@ export const ProductsCategoriesTable: FC<IProps> = ({ data, isDisabled }) => {
                     open={confirmationModal}
                     onClose={() => setConfirmationModal(false)}
                     actionName="Delete"
+                    actionColor="error"
                     callbackFn={() => deletionAction(deletionId)}
                 />
             )}

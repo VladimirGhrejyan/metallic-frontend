@@ -58,6 +58,7 @@ export const UpdateProductPage = () => {
                     open={confirmationModal}
                     onClose={() => setConfirmationModal(false)}
                     actionName="Delete"
+                    actionColor="error"
                     callbackFn={() => deletionAction(Number(productId))}
                 />
             )}
