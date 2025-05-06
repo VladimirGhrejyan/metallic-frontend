@@ -10,9 +10,11 @@ export const {
     useGetProductByIdQuery,
     useLazyGetProductByIdQuery,
     useUpdateProductImageMutation,
+    useBulkUpdateProductsMutation,
 } = productApi;
 
 export type {
+    BulkUpdateProductsApiArg,
     CreateProductDto,
     GetProductByIdApiResponse,
     GetProductsApiArg,
