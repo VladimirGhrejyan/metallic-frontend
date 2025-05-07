@@ -1,6 +1,6 @@
 import { Box, Grid2 } from '@mui/material';
 import { GetProductsApiResponse } from '~entities/product';
-import { ProductCard } from '~shared/ui/componets';
+import { ProductCard } from '~shared/ui/components';
 
 interface IProps {
     data: GetProductsApiResponse['items'];

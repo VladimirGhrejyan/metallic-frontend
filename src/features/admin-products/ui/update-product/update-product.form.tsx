@@ -10,7 +10,7 @@ import {
     useUpdateProductImageMutation,
 } from '~entities/product/api/product';
 import { cleanObjectByKeys, compressImage, convertHeicToJpeg } from '~shared/helpers';
-import { Loader, PageHeader } from '~shared/ui/componets';
+import { Loader, PageHeader } from '~shared/ui/components';
 import { InputController } from '~shared/ui/controllers/input-controller';
 import { AutocompleteController } from '~shared/ui/controllers/input-controller/autocomplete-controller';
 import { InputNumberController } from '~shared/ui/controllers/input-controller/number-input.controller';
@@ -65,7 +65,7 @@ export const UpdateProductForm: FC<IProps> = ({ data }) => {
     });
 
     const [updateProduct, { isLoading }] = useUpdateProductMutation();
-    const [updateProductImage, { isLoading: isUploadImagetLoading }] =
+    const [updateProductImage, { isLoading: isUploadImageLoading }] =
         useUpdateProductImageMutation();
     const { data: productCategoriesList, isLoading: isGetLoading } = useGetProductCategoriesQuery({
         order: 'ASC',
@@ -73,7 +73,10 @@ export const UpdateProductForm: FC<IProps> = ({ data }) => {
     });
 
     const onSubmit: SubmitHandler<UpdateProductFormValues> = (formValues) => {
-        const cleanedValues = cleanObjectByKeys(formValues);
+        const cleanedValues = {
+            code: formValues.code,
+            ...cleanObjectByKeys({ ...formValues, code: undefined }),
+        };
 
         updateProduct({ id: data.id, updateProductDto: cleanedValues })
             .unwrap()
@@ -91,7 +94,7 @@ export const UpdateProductForm: FC<IProps> = ({ data }) => {
 
     return (
         <>
-            {isLoading || isGetLoading || (isUploadImagetLoading && <Loader />)}
+            {isLoading || isGetLoading || (isUploadImageLoading && <Loader />)}
             <Box
                 sx={{
                     display: 'flex',
@@ -269,7 +272,7 @@ export const UpdateProductForm: FC<IProps> = ({ data }) => {
                                 isLoading ||
                                 isGetLoading ||
                                 isImageUploading ||
-                                isUploadImagetLoading
+                                isUploadImageLoading
                             }
                             variant="contained"
                             color="primary"

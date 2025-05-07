@@ -1,7 +1,7 @@
 import { Box, Grid2, TextField } from '@mui/material';
 import { FC } from 'react';
 import { GetProductCategoryByIdApiResponse } from '~entities/product-category';
-import { PageHeader } from '~shared/ui/componets';
+import { PageHeader } from '~shared/ui/components';
 
 interface IProps {
     data: GetProductCategoryByIdApiResponse;

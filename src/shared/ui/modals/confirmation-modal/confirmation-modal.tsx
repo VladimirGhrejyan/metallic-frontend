@@ -1,6 +1,7 @@
 import CloseIcon from '@mui/icons-material/Close';
 import {
     Button,
+    ButtonOwnProps,
     Dialog,
     DialogActions,
     DialogContent,
@@ -16,6 +17,7 @@ interface IProps extends DialogProps {
     actionName: 'Delete' | 'Update';
     callbackFn: () => void;
     onClose: () => void;
+    actionColor?: ButtonOwnProps['color'];
 }
 
 export const ConfirmationModal: FC<IProps> = ({
@@ -24,10 +26,12 @@ export const ConfirmationModal: FC<IProps> = ({
     open,
     onClose,
     isDisabled,
+    actionColor = 'primary',
 }) => {
     return (
         <Dialog open={open} onClose={onClose} maxWidth={'xs'} fullWidth>
             <DialogTitle
+                component={'div'}
                 sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
             >
                 <Typography variant="h5" fontWeight="bold">
@@ -46,7 +50,7 @@ export const ConfirmationModal: FC<IProps> = ({
                     disabled={isDisabled}
                     onClick={callbackFn}
                     variant="contained"
-                    color="error"
+                    color={actionColor}
                 >
                     {actionName}
                 </Button>

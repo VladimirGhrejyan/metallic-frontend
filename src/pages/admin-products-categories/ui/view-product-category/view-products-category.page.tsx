@@ -5,7 +5,7 @@ import { FC } from 'react';
 import { productsCategoryViewRoute } from '~app/providers/router/config/routes';
 import { useGetProductCategoryByIdQuery } from '~entities/product-category';
 import { ViewProductCategoryForm } from '~features/admin-products-categories';
-import { BackButton, Loader } from '~shared/ui/componets';
+import { BackButton, Loader } from '~shared/ui/components';
 
 export const ViewProductsCategoryPage: FC = () => {
     const navigate = useNavigate();

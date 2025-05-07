@@ -4,12 +4,12 @@ import { useNavigate } from '@tanstack/react-router';
 import { ChangeEvent, MouseEvent, useCallback, useMemo } from 'react';
 import { productsRoute } from '~app/providers/router/config/routes';
 import { useGetProductsQuery } from '~entities/product';
-import { ProductsFilters, ProductsTable } from '~features/admin-products';
+import { BulkUpdate, ProductsFilters, ProductsTable } from '~features/admin-products';
 import { IProductsQueryArgs } from '~pages/admin-products/model/get-products/admin-products.types';
 import { minimumPage } from '~shared/constants';
 import { cleanedObject, stringifyObject } from '~shared/helpers';
-import { Loader, PageHeader } from '~shared/ui/componets';
-import { SearchInput } from '~shared/ui/componets/search-input';
+import { Loader, PageHeader } from '~shared/ui/components';
+import { SearchInput } from '~shared/ui/components/search-input';
 import { FiltersPopover } from '~widgets/filters-popover';
 
 export const GetProductsPage = () => {
@@ -85,16 +85,19 @@ export const GetProductsPage = () => {
         <Box display="flex" flexDirection="column" gap={2}>
             <Box display="flex" justifyContent="space-between" flexWrap="wrap" gap={2}>
                 <PageHeader pageTitle="Products" />
-                <Button
-                    onClick={() => navigate({ to: '/admin/products/create' })}
-                    variant="outlined"
-                    sx={{ gap: 1, color: 'primary.main', borderRadius: 1 }}
-                >
-                    <AddCircleOutlineIcon fontSize="medium" />
-                    <Typography variant="body1" fontWeight="bold">
-                        New Product
-                    </Typography>
-                </Button>
+                <Box display="flex" gap={2}>
+                    <BulkUpdate />
+                    <Button
+                        onClick={() => navigate({ to: '/admin/products/create' })}
+                        variant="outlined"
+                        sx={{ gap: 1, color: 'primary.main', borderRadius: 1 }}
+                    >
+                        <AddCircleOutlineIcon fontSize="medium" />
+                        <Typography variant="body1" fontWeight="bold">
+                            New Product
+                        </Typography>
+                    </Button>
+                </Box>
             </Box>
             <Box display="flex" gap={2}>
                 <SearchInput onSearch={onSearch} defaultValue={memoizedDefaultSearchValue} />

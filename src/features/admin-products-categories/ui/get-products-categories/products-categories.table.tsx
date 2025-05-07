@@ -18,7 +18,7 @@ import {
     useDeleteProductCategoryMutation,
 } from '~entities/product-category/api/product-category';
 import { tableHeaderRows } from '~features/admin-products-categories/model/get-products/table.constants';
-import { NoData } from '~shared/ui/componets';
+import { NoData } from '~shared/ui/components';
 import { ConfirmationModal } from '~shared/ui/modals';
 
 interface IProps {
@@ -153,6 +153,7 @@ export const ProductsCategoriesTable: FC<IProps> = ({ data, isDisabled }) => {
                     open={confirmationModal}
                     onClose={() => setConfirmationModal(false)}
                     actionName="Delete"
+                    actionColor="error"
                     callbackFn={() => deletionAction(deletionId)}
                 />
             )}

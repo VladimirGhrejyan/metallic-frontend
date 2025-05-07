@@ -3,7 +3,7 @@ import { Box, Button, Grid2 } from '@mui/material';
 import { FC } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { useCreateProductCategoryMutation } from '~entities/product-category';
-import { Loader, PageHeader } from '~shared/ui/componets';
+import { Loader, PageHeader } from '~shared/ui/components';
 import { InputController } from '~shared/ui/controllers/input-controller';
 
 import { createProductCategoryFormConstants } from '../../model/create-category/form.constants';
