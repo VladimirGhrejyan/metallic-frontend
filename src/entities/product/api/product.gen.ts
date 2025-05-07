@@ -48,6 +48,17 @@ const injectedRtkApi = api
                 }),
                 invalidatesTags: ['products'],
             }),
+            bulkUpdateProducts: build.mutation<
+                BulkUpdateProductsApiResponse,
+                BulkUpdateProductsApiArg
+            >({
+                query: (queryArg) => ({
+                    url: `/products/bulk`,
+                    method: 'PATCH',
+                    body: queryArg.body,
+                }),
+                invalidatesTags: ['products'],
+            }),
             updateProductImage: build.mutation<
                 UpdateProductImageApiResponse,
                 UpdateProductImageApiArg
@@ -88,6 +99,12 @@ export type UpdateProductApiArg = {
 export type DeleteProductApiResponse = unknown;
 export type DeleteProductApiArg = {
     id: number;
+};
+export type BulkUpdateProductsApiResponse = unknown;
+export type BulkUpdateProductsApiArg = {
+    body: {
+        file?: Blob;
+    };
 };
 export type UpdateProductImageApiResponse = unknown;
 export type UpdateProductImageApiArg = {
@@ -154,8 +171,8 @@ export type CreateProductDto = {
     description?: string;
 };
 export type UpdateProductDto = {
+    code: string;
     title?: string;
-    code?: string;
     costPrice?: number;
     markup?: number;
     categoryId?: number;
