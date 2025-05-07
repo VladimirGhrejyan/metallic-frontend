@@ -8,8 +8,8 @@ import { ProductsFilters, ProductsTable } from '~features/admin-products';
 import { IProductsQueryArgs } from '~pages/admin-products/model/get-products/admin-products.types';
 import { minimumPage } from '~shared/constants';
 import { cleanedObject, stringifyObject } from '~shared/helpers';
-import { Loader, PageHeader } from '~shared/ui/componets';
-import { SearchInput } from '~shared/ui/componets/search-input';
+import { Loader, PageHeader } from '~shared/ui/components';
+import { SearchInput } from '~shared/ui/components/search-input';
 import { FiltersPopover } from '~widgets/filters-popover';
 
 export const GetProductsPage = () => {

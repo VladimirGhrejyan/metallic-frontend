@@ -5,7 +5,7 @@ import { FC } from 'react';
 import { productUpdateRoute, productViewRoute } from '~app/providers/router/config/routes';
 import { useGetProductByIdQuery } from '~entities/product';
 import { ViewProductForm } from '~features/admin-products';
-import { BackButton, Loader } from '~shared/ui/componets';
+import { BackButton, Loader } from '~shared/ui/components';
 
 export const ViewProductPage: FC = () => {
     const navigate = useNavigate({ from: productUpdateRoute.fullPath });

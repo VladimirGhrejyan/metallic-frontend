@@ -1,7 +1,7 @@
 import { Box, CardMedia, Grid2, TextField } from '@mui/material';
 import { FC } from 'react';
 import { GetProductByIdApiResponse } from '~entities/product';
-import { PageHeader } from '~shared/ui/componets';
+import { PageHeader } from '~shared/ui/components';
 
 interface IProps {
     data: GetProductByIdApiResponse;
