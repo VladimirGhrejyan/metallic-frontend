@@ -74,8 +74,8 @@ export const UpdateProductForm: FC<IProps> = ({ data }) => {
 
     const onSubmit: SubmitHandler<UpdateProductFormValues> = (formValues) => {
         const cleanedValues = {
-            code: formValues.code,
             ...cleanObjectByKeys({ ...formValues, code: undefined }),
+            code: formValues.code,
         };
 
         updateProduct({ id: data.id, updateProductDto: cleanedValues })
