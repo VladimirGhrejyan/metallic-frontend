@@ -9,7 +9,7 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
-    Grid2,
+    Grid,
     IconButton,
     Typography,
 } from '@mui/material';
@@ -89,8 +89,8 @@ export const BulkUpdate: FC = () => {
                     </DialogTitle>
 
                     <DialogContent>
-                        <Grid2 container spacing={2}>
-                            <Grid2 size={12}>
+                        <Grid container spacing={2}>
+                            <Grid size={12}>
                                 <Box
                                     sx={{
                                         display: 'flex',
@@ -210,8 +210,8 @@ export const BulkUpdate: FC = () => {
                                         </Box>
                                     )}
                                 </Box>
-                            </Grid2>
-                        </Grid2>
+                            </Grid>
+                        </Grid>
                     </DialogContent>
                     <DialogActions sx={{ paddingX: 3, paddingY: 2 }}>
                         <Button

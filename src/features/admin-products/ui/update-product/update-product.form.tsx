@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, CardMedia, CircularProgress, Grid2, Typography } from '@mui/material';
+import { Box, Button, CardMedia, CircularProgress, Grid, Typography } from '@mui/material';
 import { FC, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
@@ -111,8 +111,8 @@ export const UpdateProductForm: FC<IProps> = ({ data }) => {
                         sx={{ mt: 2, width: '100%' }}
                         onSubmit={form.handleSubmit(onSubmit)}
                     >
-                        <Grid2 container spacing={2}>
-                            <Grid2 size={12}>
+                        <Grid container spacing={2}>
+                            <Grid size={12}>
                                 <Box
                                     sx={{
                                         display: 'flex',
@@ -197,24 +197,24 @@ export const UpdateProductForm: FC<IProps> = ({ data }) => {
                                         </Box>
                                     )}
                                 </Box>
-                            </Grid2>
-                            <Grid2 size={12}>
+                            </Grid>
+                            <Grid size={12}>
                                 <InputController
                                     fullWidth
                                     name={'code'}
                                     label="Code"
                                     variant="outlined"
                                 />
-                            </Grid2>
-                            <Grid2 size={12}>
+                            </Grid>
+                            <Grid size={12}>
                                 <InputController
                                     fullWidth
                                     name={'title'}
                                     label="Title"
                                     variant="outlined"
                                 />
-                            </Grid2>
-                            <Grid2 size={12}>
+                            </Grid>
+                            <Grid size={12}>
                                 <InputNumberController
                                     fullWidth
                                     name={'costPrice'}
@@ -223,8 +223,8 @@ export const UpdateProductForm: FC<IProps> = ({ data }) => {
                                     decimalScale={2}
                                     allowNegative={false}
                                 />
-                            </Grid2>
-                            <Grid2 size={12}>
+                            </Grid>
+                            <Grid size={12}>
                                 <InputNumberController
                                     fullWidth
                                     name={'markup'}
@@ -233,8 +233,8 @@ export const UpdateProductForm: FC<IProps> = ({ data }) => {
                                     decimalScale={2}
                                     allowNegative={false}
                                 />
-                            </Grid2>
-                            <Grid2 size={12}>
+                            </Grid>
+                            <Grid size={12}>
                                 <InputNumberController
                                     fullWidth
                                     name={'quantityAvailable'}
@@ -243,8 +243,8 @@ export const UpdateProductForm: FC<IProps> = ({ data }) => {
                                     decimalScale={0}
                                     allowNegative={false}
                                 />
-                            </Grid2>
-                            <Grid2 size={12}>
+                            </Grid>
+                            <Grid size={12}>
                                 <AutocompleteController
                                     loading={isGetLoading}
                                     options={
@@ -255,8 +255,8 @@ export const UpdateProductForm: FC<IProps> = ({ data }) => {
                                     label="Category Id"
                                     placeholder="Category Id"
                                 />
-                            </Grid2>
-                            <Grid2 size={12}>
+                            </Grid>
+                            <Grid size={12}>
                                 <InputController
                                     fullWidth
                                     name={'description'}
@@ -265,8 +265,8 @@ export const UpdateProductForm: FC<IProps> = ({ data }) => {
                                     label="Description"
                                     variant="outlined"
                                 />
-                            </Grid2>
-                        </Grid2>
+                            </Grid>
+                        </Grid>
                         <Button
                             disabled={
                                 isLoading ||

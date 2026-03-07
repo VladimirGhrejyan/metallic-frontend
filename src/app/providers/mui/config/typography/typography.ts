@@ -1,6 +1,6 @@
-import { TypographyOptions } from '@mui/material/styles/createTypography';
+import { TypographyVariantsOptions } from '@mui/material/styles';
 
-export const typography: TypographyOptions = {
+export const typography: TypographyVariantsOptions = {
     fontFamily: "'Roboto', 'Arial', sans-serif",
 
     h1: {

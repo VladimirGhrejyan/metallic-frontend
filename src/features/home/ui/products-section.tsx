@@ -1,4 +1,4 @@
-import { Box, Grid2 } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import { GetProductsApiResponse } from '~entities/product';
 import { ProductCard } from '~shared/ui/components';
 
@@ -9,13 +9,13 @@ interface IProps {
 export const ProductsSection = ({ data }: IProps) => {
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <Grid2 container spacing={4}>
+            <Grid container spacing={4}>
                 {data.map((product) => (
-                    <Grid2 key={product.code} size={{ xs: 12, sm: 4, md: 4, lg: 3, xl: 4 }}>
+                    <Grid key={product.code} size={{ xs: 12, sm: 4, md: 4, lg: 3, xl: 4 }}>
                         <ProductCard product={product} />
-                    </Grid2>
+                    </Grid>
                 ))}
-            </Grid2>
+            </Grid>
         </Box>
     );
 };
