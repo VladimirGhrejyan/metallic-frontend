@@ -18,6 +18,14 @@ const ENTITIES_AND_TAGS = [
         tag: 'products',
         entity: 'product',
     },
+    {
+        tag: 'orders',
+        entity: 'order',
+    },
+    {
+        tag: 'clients',
+        entity: 'client',
+    },
 ];
 
 const endpointMatcherFn = (targetTag) => (_, operationDefinition) => {
