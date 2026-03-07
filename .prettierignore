@@ -15,6 +15,7 @@ dist-ssr
 /tsconfig.app.tsbuildinfo
 /vite.config.d.ts
 /vite.config.js
+/pnpm-lock.yaml
 
 # Editor directories and files
 .vscode/*
