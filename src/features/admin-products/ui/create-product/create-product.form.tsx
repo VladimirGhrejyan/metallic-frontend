@@ -76,7 +76,7 @@ export const CreateProductForm: FC = () => {
 
         createProduct({ createProductDto: cleanedValues as CreateProductDto })
             .unwrap()
-            .then((res) => {
+            .then((res: { id: number }) => {
                 if (file) {
                     const formData = new FormData();
                     formData.append('image', file as Blob, (file as File).name);
@@ -270,7 +270,7 @@ export const CreateProductForm: FC = () => {
                                 />
                             </Grid>
                             <Grid size={12}>
-                                <AutocompleteController
+                                <AutocompleteController<{ id: number; title: string; code: string }>
                                     loading={isGetLoading}
                                     options={data ? data.items : []}
                                     getOptionLabel={(option) => `${option.title} - ${option.code}`}

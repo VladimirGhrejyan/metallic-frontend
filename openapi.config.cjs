@@ -1,4 +1,3 @@
-const API_PATH = process.cwd() + '/src/shared/config/api';
 const API_NAME = 'api';
 
 const ENTITIES_AND_TAGS = [
@@ -35,8 +34,9 @@ const endpointMatcherFn = (targetTag) => (_, operationDefinition) => {
     return false;
 };
 
+const path = require('path');
 const buildPathFn = (entity) => {
-    return process.cwd() + `/src/entities/${entity}/api/${entity}.gen.ts`;
+    return path.join(process.cwd(), `src/entities/${entity}/api/${entity}.gen.ts`);
 };
 
 const outputFilesFactory = (data) => {
@@ -50,9 +50,10 @@ const outputFilesFactory = (data) => {
     );
 };
 
+// After running rtk:codegen, if *.gen.ts get absolute import path, replace it with: from '~shared/config/api'
 const config = {
     schemaFile: 'http://localhost:3000/static/openapi/openapi.json',
-    apiFile: API_PATH,
+    apiFile: path.join(process.cwd(), 'src/shared/config/api'),
     apiImport: API_NAME,
     hooks: false,
     tag: true,

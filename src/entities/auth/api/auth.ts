@@ -9,7 +9,10 @@ export type { SignUpInputDto };
 export const authApi = genAuthApi.enhanceEndpoints({
     endpoints: {
         signUp: {
-            onQueryStarted: async (_, { queryFulfilled }) => {
+            onQueryStarted: async (
+                _arg: unknown,
+                { queryFulfilled }: { queryFulfilled: Promise<{ data: { access_token: string } }> },
+            ) => {
                 try {
                     const { data } = await queryFulfilled;
                     storage.set(StorageKeys.ACCESS_TOKEN, `Bearer ${data.access_token}`);
@@ -21,7 +24,10 @@ export const authApi = genAuthApi.enhanceEndpoints({
         },
 
         signIn: {
-            onQueryStarted: async (_, { queryFulfilled }) => {
+            onQueryStarted: async (
+                _arg: unknown,
+                { queryFulfilled }: { queryFulfilled: Promise<{ data: { access_token: string } }> },
+            ) => {
                 try {
                     const { data } = await queryFulfilled;
                     storage.set(StorageKeys.ACCESS_TOKEN, `Bearer ${data.access_token}`);
