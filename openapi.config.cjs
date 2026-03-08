@@ -1,4 +1,3 @@
-const API_PATH = process.cwd() + '/src/shared/config/api';
 const API_NAME = 'api';
 
 const ENTITIES_AND_TAGS = [
@@ -36,7 +35,7 @@ const endpointMatcherFn = (targetTag) => (_, operationDefinition) => {
 };
 
 const buildPathFn = (entity) => {
-    return process.cwd() + `/src/entities/${entity}/api/${entity}.gen.ts`;
+    return `src/entities/${entity}/api/${entity}.gen.ts`;
 };
 
 const outputFilesFactory = (data) => {
@@ -52,7 +51,7 @@ const outputFilesFactory = (data) => {
 
 const config = {
     schemaFile: 'http://localhost:3000/static/openapi/openapi.json',
-    apiFile: API_PATH,
+    apiFile: 'src/shared/config/api',
     apiImport: API_NAME,
     hooks: false,
     tag: true,

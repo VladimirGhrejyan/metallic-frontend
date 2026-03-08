@@ -18,7 +18,7 @@ import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '~app/providers/store/config/store';
 import { useGetClientsQuery } from '~entities/client';
-import { useCreateOrderMutation } from '~entities/order';
+import { type GetOrderByIdApiResponse, useCreateOrderMutation } from '~entities/order';
 import type { OrderDraftItem } from '~entities/order-draft';
 import { clearDraft, removeItem, updateItemCount } from '~entities/order-draft';
 import { showSnackbar } from '~entities/snackbar';
@@ -64,7 +64,7 @@ export const CreateOrderForm: FC = () => {
             },
         })
             .unwrap()
-            .then((order) => {
+            .then((order: GetOrderByIdApiResponse) => {
                 dispatch(clearDraft());
                 dispatch(
                     showSnackbar({
@@ -150,7 +150,10 @@ export const CreateOrderForm: FC = () => {
             <Box sx={{ maxWidth: 400 }}>
                 <Autocomplete
                     options={clients}
-                    getOptionLabel={(option) =>
+                    getOptionLabel={(option: {
+                        name: string;
+                        taxpayerRegistrationNumber?: string | null;
+                    }) =>
                         `${option.name}${option.taxpayerRegistrationNumber ? ` (${option.taxpayerRegistrationNumber})` : ''}`
                     }
                     value={clients.find((c) => c.id === clientId) ?? null}
