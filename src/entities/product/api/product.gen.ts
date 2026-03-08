@@ -1,4 +1,4 @@
-import { api } from '/Users/vladimir/Desktop/workspace/tools-zone/metallic-frontend/src/shared/config/api';
+import { api } from '~shared/config/api';
 
 export const addTagTypes = ['products'] as const;
 const injectedRtkApi = api

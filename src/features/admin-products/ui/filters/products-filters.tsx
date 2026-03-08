@@ -47,7 +47,7 @@ export const ProductsFilters: FC<IProps> = ({ onFiltersSubmit, onResetFilters, d
                 sx={{ mt: 2, width: '100%', display: 'flex', flexDirection: 'column', gap: 2 }}
                 onSubmit={form.handleSubmit(onSubmit)}
             >
-                <AutocompleteController
+                <AutocompleteController<{ id: number; title: string; code: string }>
                     loading={isLoading}
                     options={data ? data.items : []}
                     getOptionLabel={(option) => `${option.title} - ${option.code}`}

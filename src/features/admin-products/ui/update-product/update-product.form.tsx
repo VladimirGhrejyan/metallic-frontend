@@ -245,7 +245,7 @@ export const UpdateProductForm: FC<IProps> = ({ data }) => {
                                 />
                             </Grid>
                             <Grid size={12}>
-                                <AutocompleteController
+                                <AutocompleteController<{ id: number; title: string; code: string }>
                                     loading={isGetLoading}
                                     options={
                                         productCategoriesList ? productCategoriesList.items : []
