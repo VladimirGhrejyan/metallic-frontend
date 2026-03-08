@@ -1,60 +1,52 @@
-import { Box, Button, TextField } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { FC, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '~app/providers/store/config/store';
 import { addItem } from '~entities/order-draft';
 import { GetProductByIdApiResponse } from '~entities/product';
 import { showSnackbar } from '~entities/snackbar';
+import { calculateTotalPrice } from '~shared/helpers';
+import { QuantityInput } from '~shared/ui/components';
 
 interface IProps {
     product: GetProductByIdApiResponse;
 }
 
+const MIN_COUNT = 1;
+
 export const AddToOrderBlock: FC<IProps> = ({ product }) => {
-    const [count, setCount] = useState<number>(1);
+    const [count, setCount] = useState<number>(MIN_COUNT);
     const dispatch = useDispatch<AppDispatch>();
 
+    const unitPrice = parseFloat(calculateTotalPrice(product.costPrice, product.markup));
+
     const handleAdd = () => {
+        const qty = count >= MIN_COUNT ? count : MIN_COUNT;
         dispatch(
             addItem({
                 productId: product.id,
-                count,
+                count: qty,
                 title: product.title,
                 code: product.code,
+                unitPrice,
             }),
         );
         dispatch(
             showSnackbar({
-                message: `Added ${product.title} x${count} to order`,
+                message: `Added ${product.title} x${qty} to order`,
                 severity: 'success',
             }),
         );
     };
 
-    const handleCountChange = (value: string) => {
-        const n = parseInt(value, 10);
-        setCount(Number.isNaN(n) || n < 1 ? 1 : n);
-    };
-
     return (
         <Box sx={{ display: 'flex', alignItems: 'stretch', gap: 1 }}>
-            <TextField
-                type="number"
-                size="small"
-                value={count}
-                onChange={(e) => handleCountChange(e.target.value)}
-                inputProps={{ min: 1, step: 1 }}
-                sx={{ width: 72 }}
-                slotProps={{
-                    input: {
-                        sx: { textAlign: 'center' },
-                    },
-                }}
-            />
+            <QuantityInput value={count} onChange={setCount} min={MIN_COUNT} />
             <Button
                 size="small"
                 variant="contained"
                 onClick={handleAdd}
+                disabled={count < MIN_COUNT}
                 sx={{ flex: 1, minWidth: 0 }}
             >
                 Add to order

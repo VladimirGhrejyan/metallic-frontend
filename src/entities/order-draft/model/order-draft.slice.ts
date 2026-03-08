@@ -5,6 +5,8 @@ export interface OrderDraftItem {
     count: number;
     title: string;
     code: string;
+    /** Unit price (per 1) at time of adding to draft. Optional for backwards compatibility with persisted drafts. */
+    unitPrice?: number;
 }
 
 const initialState: OrderDraftItem[] = [];
@@ -14,12 +16,12 @@ export const orderDraftSlice = createSlice({
     initialState,
     reducers: {
         addItem: (state, action: PayloadAction<OrderDraftItem>) => {
-            const { productId, count, title, code } = action.payload;
+            const { productId, count, title, code, unitPrice } = action.payload;
             const existing = state.find((item) => item.productId === productId);
             if (existing) {
                 existing.count += count;
             } else {
-                state.push({ productId, count, title, code });
+                state.push({ productId, count, title, code, unitPrice: unitPrice ?? 0 });
             }
         },
         removeItem: (state, action: PayloadAction<number>) => {

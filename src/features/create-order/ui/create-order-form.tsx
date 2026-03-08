@@ -12,6 +12,7 @@ import {
     TableHead,
     TableRow,
     TextField,
+    Typography,
 } from '@mui/material';
 import { useNavigate } from '@tanstack/react-router';
 import { FC, useEffect, useState } from 'react';
@@ -22,7 +23,7 @@ import { type GetOrderByIdApiResponse, useCreateOrderMutation } from '~entities/
 import type { OrderDraftItem } from '~entities/order-draft';
 import { clearDraft, removeItem, updateItemCount } from '~entities/order-draft';
 import { showSnackbar } from '~entities/snackbar';
-import { PageHeader } from '~shared/ui/components';
+import { PageHeader, QuantityInput } from '~shared/ui/components';
 
 export const CreateOrderForm: FC = () => {
     const draft = useSelector((state: RootState) => state.orderDraft);
@@ -100,53 +101,63 @@ export const CreateOrderForm: FC = () => {
                         <TableRow>
                             <TableCell>Product</TableCell>
                             <TableCell>Code</TableCell>
+                            <TableCell align="right">Unit price</TableCell>
                             <TableCell align="right">Count</TableCell>
+                            <TableCell align="right">Total</TableCell>
                             <TableCell align="right">Actions</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {draft.map((item: OrderDraftItem) => (
-                            <TableRow key={item.productId}>
-                                <TableCell>{item.title}</TableCell>
-                                <TableCell>{item.code}</TableCell>
-                                <TableCell align="right">
-                                    <input
-                                        type="number"
-                                        min={1}
-                                        value={item.count}
-                                        onChange={(e) =>
-                                            dispatch(
-                                                updateItemCount({
-                                                    productId: item.productId,
-                                                    count: Math.max(
-                                                        1,
-                                                        parseInt(e.target.value, 10) || 1,
-                                                    ),
-                                                }),
-                                            )
-                                        }
-                                        style={{
-                                            width: 64,
-                                            padding: '4px 8px',
-                                            borderRadius: 4,
-                                            border: '1px solid #ccc',
-                                        }}
-                                    />
-                                </TableCell>
-                                <TableCell align="right">
-                                    <IconButton
-                                        size="small"
-                                        color="error"
-                                        onClick={() => dispatch(removeItem(item.productId))}
-                                    >
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                        {draft.map((item: OrderDraftItem) => {
+                            const unitPrice = item.unitPrice ?? 0;
+                            const lineTotal = unitPrice * item.count;
+                            return (
+                                <TableRow key={item.productId}>
+                                    <TableCell>{item.title}</TableCell>
+                                    <TableCell>{item.code}</TableCell>
+                                    <TableCell align="right">
+                                        {unitPrice > 0 ? unitPrice.toFixed(2) : '—'}
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        <QuantityInput
+                                            value={item.count}
+                                            onChange={(count) =>
+                                                dispatch(
+                                                    updateItemCount({
+                                                        productId: item.productId,
+                                                        count,
+                                                    }),
+                                                )
+                                            }
+                                            min={1}
+                                        />
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        {lineTotal > 0 ? lineTotal.toFixed(2) : '—'}
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        <IconButton
+                                            size="small"
+                                            color="error"
+                                            onClick={() => dispatch(removeItem(item.productId))}
+                                        >
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </TableCell>
+                                </TableRow>
+                            );
+                        })}
                     </TableBody>
                 </Table>
             </TableContainer>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+                <Typography variant="h6">
+                    Order total:{' '}
+                    {draft
+                        .reduce((sum, item) => sum + (item.unitPrice ?? 0) * item.count, 0)
+                        .toFixed(2)}
+                </Typography>
+            </Box>
             <Box sx={{ maxWidth: 400 }}>
                 <Autocomplete
                     options={clients}
