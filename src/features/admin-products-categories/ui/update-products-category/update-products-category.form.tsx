@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, Grid2 } from '@mui/material';
+import { Box, Button, Grid } from '@mui/material';
 import { FC } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import {
@@ -53,8 +53,8 @@ export const UpdateProductCategoryForm: FC<IProps> = ({ data }) => {
                         sx={{ mt: 2, width: '100%' }}
                         onSubmit={form.handleSubmit(onSubmit)}
                     >
-                        <Grid2 container spacing={2}>
-                            <Grid2 size={12}>
+                        <Grid container spacing={2}>
+                            <Grid size={12}>
                                 <InputController
                                     fullWidth
                                     name={'code'}
@@ -62,9 +62,9 @@ export const UpdateProductCategoryForm: FC<IProps> = ({ data }) => {
                                     variant="outlined"
                                     size="small"
                                 />
-                            </Grid2>
+                            </Grid>
 
-                            <Grid2 size={12}>
+                            <Grid size={12}>
                                 <InputController
                                     fullWidth
                                     name={'title'}
@@ -72,8 +72,8 @@ export const UpdateProductCategoryForm: FC<IProps> = ({ data }) => {
                                     variant="outlined"
                                     size="small"
                                 />
-                            </Grid2>
-                        </Grid2>
+                            </Grid>
+                        </Grid>
                         <Button
                             disabled={isLoading}
                             variant="contained"

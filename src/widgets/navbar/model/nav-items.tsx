@@ -16,4 +16,14 @@ export const navItems: INavItem[] = [
         to: '/admin/products-categories',
         icon: null,
     },
+    {
+        name: 'Clients',
+        to: '/admin/clients',
+        icon: null,
+    },
+    {
+        name: 'Orders',
+        to: '/admin/orders',
+        icon: null,
+    },
 ];

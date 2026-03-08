@@ -1,4 +1,4 @@
-import { Box, CardMedia, Grid2, TextField } from '@mui/material';
+import { Box, CardMedia, Grid, TextField } from '@mui/material';
 import { FC } from 'react';
 import { GetProductByIdApiResponse } from '~entities/product';
 import { PageHeader } from '~shared/ui/components';
@@ -20,9 +20,9 @@ export const ViewProductForm: FC<IProps> = ({ data }) => {
         >
             <PageHeader pageTitle={`View Product`} />
             <Box sx={{ mt: 2, width: '100%' }}>
-                <Grid2 container spacing={2}>
+                <Grid container spacing={2}>
                     {data.image && (
-                        <Grid2 size={12}>
+                        <Grid size={12}>
                             <Box
                                 sx={{
                                     display: 'flex',
@@ -66,42 +66,42 @@ export const ViewProductForm: FC<IProps> = ({ data }) => {
                                     />
                                 </Box>
                             </Box>
-                        </Grid2>
+                        </Grid>
                     )}
-                    <Grid2 size={12}>
+                    <Grid size={12}>
                         <TextField fullWidth defaultValue={data.code} label="Code" disabled />
-                    </Grid2>
-                    <Grid2 size={12}>
+                    </Grid>
+                    <Grid size={12}>
                         <TextField fullWidth defaultValue={data.title} label="Title" disabled />
-                    </Grid2>
-                    <Grid2 size={12}>
+                    </Grid>
+                    <Grid size={12}>
                         <TextField
                             fullWidth
                             defaultValue={data.costPrice}
                             label="Cost Price"
                             disabled
                         />
-                    </Grid2>
-                    <Grid2 size={12}>
+                    </Grid>
+                    <Grid size={12}>
                         <TextField fullWidth defaultValue={data.markup} label="Markup" disabled />
-                    </Grid2>
-                    <Grid2 size={12}>
+                    </Grid>
+                    <Grid size={12}>
                         <TextField
                             fullWidth
                             defaultValue={data.quantityAvailable}
                             label="Quantity Available"
                             disabled
                         />
-                    </Grid2>
-                    <Grid2 size={12}>
+                    </Grid>
+                    <Grid size={12}>
                         <TextField
                             fullWidth
                             defaultValue={data.categoryId}
                             label="Category Id"
                             disabled
                         />
-                    </Grid2>
-                    <Grid2 size={12}>
+                    </Grid>
+                    <Grid size={12}>
                         <TextField
                             fullWidth
                             defaultValue={data.description}
@@ -110,8 +110,8 @@ export const ViewProductForm: FC<IProps> = ({ data }) => {
                             rows={4}
                             disabled
                         />
-                    </Grid2>
-                </Grid2>
+                    </Grid>
+                </Grid>
             </Box>
         </Box>
     );

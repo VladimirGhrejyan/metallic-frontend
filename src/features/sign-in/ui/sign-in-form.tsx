@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { Box, Button, Container, Grid2, IconButton, Typography } from '@mui/material';
+import { Box, Button, Container, Grid, IconButton, Typography } from '@mui/material';
 import { FC, useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { useSignInMutation } from '~entities/auth';
@@ -62,17 +62,17 @@ export const SignInForm: FC = () => {
                         sx={{ mt: 2, width: '100%' }}
                         onSubmit={form.handleSubmit(onSubmit)}
                     >
-                        <Grid2 container spacing={2}>
-                            <Grid2 size={12}>
+                        <Grid container spacing={2}>
+                            <Grid size={12}>
                                 <InputController
                                     fullWidth
                                     name={'email'}
                                     label="Email"
                                     variant="outlined"
                                 />
-                            </Grid2>
+                            </Grid>
 
-                            <Grid2 size={12}>
+                            <Grid size={12}>
                                 <InputController
                                     fullWidth
                                     label="Password"
@@ -93,8 +93,8 @@ export const SignInForm: FC = () => {
                                         },
                                     }}
                                 />
-                            </Grid2>
-                        </Grid2>
+                            </Grid>
+                        </Grid>
 
                         <Button
                             variant="contained"

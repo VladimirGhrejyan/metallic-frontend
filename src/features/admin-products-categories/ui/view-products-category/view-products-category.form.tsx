@@ -1,4 +1,4 @@
-import { Box, Grid2, TextField } from '@mui/material';
+import { Box, Grid, TextField } from '@mui/material';
 import { FC } from 'react';
 import { GetProductCategoryByIdApiResponse } from '~entities/product-category';
 import { PageHeader } from '~shared/ui/components';
@@ -20,14 +20,14 @@ export const ViewProductCategoryForm: FC<IProps> = ({ data }) => {
         >
             <PageHeader pageTitle={`View Products Category`} />
             <Box sx={{ mt: 2, width: '100%' }}>
-                <Grid2 container spacing={2}>
-                    <Grid2 size={12}>
+                <Grid container spacing={2}>
+                    <Grid size={12}>
                         <TextField fullWidth defaultValue={data.code} label="Code" disabled />
-                    </Grid2>
-                    <Grid2 size={12}>
+                    </Grid>
+                    <Grid size={12}>
                         <TextField fullWidth defaultValue={data.title} label="Title" disabled />
-                    </Grid2>
-                </Grid2>
+                    </Grid>
+                </Grid>
             </Box>
         </Box>
     );

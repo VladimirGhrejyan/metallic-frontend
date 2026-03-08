@@ -5,7 +5,7 @@ import {
     Button,
     CardMedia,
     CircularProgress,
-    Grid2,
+    Grid,
     IconButton,
     Typography,
 } from '@mui/material';
@@ -119,8 +119,8 @@ export const CreateProductForm: FC = () => {
                         sx={{ mt: 2, width: '100%' }}
                         onSubmit={form.handleSubmit(onSubmit)}
                     >
-                        <Grid2 container spacing={2}>
-                            <Grid2 size={12}>
+                        <Grid container spacing={2}>
+                            <Grid size={12}>
                                 <Box
                                     sx={{
                                         display: 'flex',
@@ -222,24 +222,24 @@ export const CreateProductForm: FC = () => {
                                         </Box>
                                     )}
                                 </Box>
-                            </Grid2>
-                            <Grid2 size={12}>
+                            </Grid>
+                            <Grid size={12}>
                                 <InputController
                                     fullWidth
                                     name={'code'}
                                     label="Code"
                                     variant="outlined"
                                 />
-                            </Grid2>
-                            <Grid2 size={12}>
+                            </Grid>
+                            <Grid size={12}>
                                 <InputController
                                     fullWidth
                                     name={'title'}
                                     label="Title"
                                     variant="outlined"
                                 />
-                            </Grid2>
-                            <Grid2 size={12}>
+                            </Grid>
+                            <Grid size={12}>
                                 <InputNumberController
                                     fullWidth
                                     name={'costPrice'}
@@ -248,8 +248,8 @@ export const CreateProductForm: FC = () => {
                                     decimalScale={2}
                                     allowNegative={false}
                                 />
-                            </Grid2>
-                            <Grid2 size={12}>
+                            </Grid>
+                            <Grid size={12}>
                                 <InputNumberController
                                     fullWidth
                                     name={'markup'}
@@ -258,8 +258,8 @@ export const CreateProductForm: FC = () => {
                                     decimalScale={2}
                                     allowNegative={false}
                                 />
-                            </Grid2>
-                            <Grid2 size={12}>
+                            </Grid>
+                            <Grid size={12}>
                                 <InputNumberController
                                     fullWidth
                                     name={'quantityAvailable'}
@@ -268,8 +268,8 @@ export const CreateProductForm: FC = () => {
                                     decimalScale={0}
                                     allowNegative={false}
                                 />
-                            </Grid2>
-                            <Grid2 size={12}>
+                            </Grid>
+                            <Grid size={12}>
                                 <AutocompleteController
                                     loading={isGetLoading}
                                     options={data ? data.items : []}
@@ -278,8 +278,8 @@ export const CreateProductForm: FC = () => {
                                     label="Category Id"
                                     placeholder="Category Id"
                                 />
-                            </Grid2>
-                            <Grid2 size={12}>
+                            </Grid>
+                            <Grid size={12}>
                                 <InputController
                                     fullWidth
                                     name={'description'}
@@ -288,8 +288,8 @@ export const CreateProductForm: FC = () => {
                                     label="Description"
                                     variant="outlined"
                                 />
-                            </Grid2>
-                        </Grid2>
+                            </Grid>
+                        </Grid>
                         <Button
                             disabled={
                                 isLoading ||
