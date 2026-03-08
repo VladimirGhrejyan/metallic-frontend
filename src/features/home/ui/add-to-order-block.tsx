@@ -1,6 +1,4 @@
-import EditIcon from '@mui/icons-material/Edit';
-import { Box, Button, IconButton, Typography } from '@mui/material';
-import { useNavigate } from '@tanstack/react-router';
+import { Box, Button, TextField } from '@mui/material';
 import { FC, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '~app/providers/store/config/store';
@@ -15,7 +13,6 @@ interface IProps {
 export const AddToOrderBlock: FC<IProps> = ({ product }) => {
     const [count, setCount] = useState<number>(1);
     const dispatch = useDispatch<AppDispatch>();
-    const navigate = useNavigate();
 
     const handleAdd = () => {
         dispatch(
@@ -34,46 +31,34 @@ export const AddToOrderBlock: FC<IProps> = ({ product }) => {
         );
     };
 
-    const handleEditClick = () => {
-        navigate({ to: `/admin/products/${product.id}/edit` });
+    const handleCountChange = (value: string) => {
+        const n = parseInt(value, 10);
+        setCount(Number.isNaN(n) || n < 1 ? 1 : n);
     };
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, mt: 1 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <Typography variant="body2">Qty:</Typography>
-                <input
-                    type="number"
-                    min={1}
-                    value={count}
-                    onChange={(e) => setCount(Math.max(1, parseInt(e.target.value, 10) || 1))}
-                    style={{
-                        width: 56,
-                        padding: '4px 8px',
-                        borderRadius: 4,
-                        border: '1px solid #ccc',
-                    }}
-                />
-                <Button size="small" variant="contained" onClick={handleAdd} sx={{ flex: 1 }}>
-                    Add to order
-                </Button>
-            </Box>
-            <Box
-                sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 0.5,
-                    cursor: 'pointer',
+        <Box sx={{ display: 'flex', alignItems: 'stretch', gap: 1 }}>
+            <TextField
+                type="number"
+                size="small"
+                value={count}
+                onChange={(e) => handleCountChange(e.target.value)}
+                inputProps={{ min: 1, step: 1 }}
+                sx={{ width: 72 }}
+                slotProps={{
+                    input: {
+                        sx: { textAlign: 'center' },
+                    },
                 }}
-                onClick={handleEditClick}
+            />
+            <Button
+                size="small"
+                variant="contained"
+                onClick={handleAdd}
+                sx={{ flex: 1, minWidth: 0 }}
             >
-                <IconButton size="small" color="primary" aria-label="Edit product">
-                    <EditIcon fontSize="small" />
-                </IconButton>
-                <Typography variant="body2" component="span">
-                    Edit
-                </Typography>
-            </Box>
+                Add to order
+            </Button>
         </Box>
     );
 };

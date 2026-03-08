@@ -72,7 +72,10 @@ export const CreateOrderForm: FC = () => {
                         severity: 'success',
                     }),
                 );
-                navigate({ to: `/admin/orders/${order.id}/view` });
+                navigate({
+                    to: '/admin/orders/$orderId/view',
+                    params: { orderId: String(order.id) },
+                });
             })
             .catch(() => {
                 dispatch(

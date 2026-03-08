@@ -16,6 +16,7 @@ export const ProductsSection = ({ data }: IProps) => {
                     <Grid key={product.code} size={{ xs: 12, sm: 4, md: 4, lg: 3, xl: 4 }}>
                         <ProductCard
                             product={product}
+                            imageLink={`/admin/products/${product.id}/edit`}
                             actions={<AddToOrderBlock product={product} />}
                         />
                     </Grid>
