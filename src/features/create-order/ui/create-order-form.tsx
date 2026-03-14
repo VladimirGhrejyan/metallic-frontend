@@ -13,12 +13,13 @@ import {
     TableRow,
     TextField,
     Typography,
+    debounce,
 } from '@mui/material';
 import { useNavigate } from '@tanstack/react-router';
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '~app/providers/store/config/store';
-import { useGetClientsQuery } from '~entities/client';
+import { useGetClientByIdQuery, useGetClientsQuery } from '~entities/client';
 import { type GetOrderByIdApiResponse, useCreateOrderMutation } from '~entities/order';
 import type { OrderDraftItem } from '~entities/order-draft';
 import { clearDraft, removeItem, updateItemCount } from '~entities/order-draft';
@@ -30,12 +31,32 @@ export const CreateOrderForm: FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
     const [clientId, setClientId] = useState<number | null>(null);
+    const [inputValue, setInputValue] = useState('');
+    const [searchInput, setSearchInput] = useState('');
 
-    const { data: clientsData } = useGetClientsQuery({
+    const debouncedSetSearch = useMemo(
+        () => debounce((value: string) => setSearchInput(value), 300),
+        [],
+    );
+
+    const { data: clientsData, isFetching: isClientsFetching } = useGetClientsQuery({
         page: '1',
-        itemsPerPage: '100',
+        itemsPerPage: '50',
+        search: searchInput || undefined,
     });
     const clients = clientsData?.items ?? [];
+
+    const selectedClientInList = clientId != null && clients.some((c) => c.id === clientId);
+    const { data: selectedClientData } = useGetClientByIdQuery(
+        { id: clientId! },
+        {
+            skip: !clientId || selectedClientInList,
+        },
+    );
+    const options =
+        clientId != null && selectedClientData && !selectedClientInList
+            ? [selectedClientData, ...clients]
+            : clients;
 
     const [createOrder, { isLoading }] = useCreateOrderMutation();
 
@@ -160,15 +181,29 @@ export const CreateOrderForm: FC = () => {
             </Box>
             <Box sx={{ maxWidth: 400 }}>
                 <Autocomplete
-                    options={clients}
+                    options={options}
                     getOptionLabel={(option: {
                         name: string;
                         taxpayerRegistrationNumber?: string | null;
                     }) =>
                         `${option.name}${option.taxpayerRegistrationNumber ? ` (${option.taxpayerRegistrationNumber})` : ''}`
                     }
-                    value={clients.find((c) => c.id === clientId) ?? null}
-                    onChange={(_, value) => setClientId(value?.id ?? null)}
+                    value={options.find((c) => c.id === clientId) ?? null}
+                    inputValue={inputValue}
+                    onInputChange={(_, newInputValue) => {
+                        setInputValue(newInputValue);
+                        debouncedSetSearch(newInputValue);
+                    }}
+                    onChange={(_, value) => {
+                        setClientId(value?.id ?? null);
+                        setInputValue(
+                            value
+                                ? `${value.name}${value.taxpayerRegistrationNumber ? ` (${value.taxpayerRegistrationNumber})` : ''}`
+                                : '',
+                        );
+                    }}
+                    loading={isClientsFetching}
+                    filterOptions={(x) => x}
                     renderInput={(params) => <TextField {...params} label="Client" required />}
                 />
             </Box>
