@@ -29,9 +29,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, actions, imag
     return (
         <Card
             variant="outlined"
-            sx={{
+            sx={(theme) => ({
                 height: '100%',
                 minHeight: 320,
+                [theme.breakpoints.up('sm')]: { minHeight: 380 },
                 display: 'flex',
                 flexDirection: 'column',
                 borderRadius: 2,
@@ -44,7 +45,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, actions, imag
                     boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
                     borderColor: 'primary.light',
                 },
-            }}
+            })}
         >
             {imageLink != null ? (
                 <Link
@@ -71,7 +72,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, actions, imag
                     variant="subtitle1"
                     fontWeight={600}
                     color="text.primary"
-                    sx={{
+                    sx={(theme) => ({
                         overflow: 'hidden',
                         display: '-webkit-box',
                         WebkitLineClamp: 2,
@@ -79,7 +80,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, actions, imag
                         textOverflow: 'ellipsis',
                         lineHeight: 1.35,
                         mb: 0.5,
-                    }}
+                        [theme.breakpoints.up('sm')]: {
+                            display: 'block',
+                            overflow: 'visible',
+                            WebkitLineClamp: 'unset',
+                            WebkitBoxOrient: 'unset',
+                            textOverflow: 'clip',
+                        },
+                    })}
                 >
                     {product.title}
                 </Typography>
