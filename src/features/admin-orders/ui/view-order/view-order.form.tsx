@@ -49,6 +49,7 @@ export const ViewOrderForm: FC<IProps> = ({ order }) => {
     const handleDownloadXlsx = () => {
         downloadOrderAsXlsx(order);
     };
+    const orderTotal = order.items.reduce((sum, item) => sum + item.price * item.count, 0);
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: 3 }}>
@@ -97,26 +98,40 @@ export const ViewOrderForm: FC<IProps> = ({ order }) => {
                         <TableRow>
                             <TableCell>Product</TableCell>
                             <TableCell>Code</TableCell>
+                            <TableCell align="right">Unit price</TableCell>
                             <TableCell align="right">Count</TableCell>
-                            <TableCell align="right">Price</TableCell>
+                            <TableCell align="right">Total</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {order.items.map((item) => (
-                            <TableRow key={item.id}>
-                                <TableCell>
-                                    {item.productSnapshot?.title ?? item.product?.title ?? '—'}
-                                </TableCell>
-                                <TableCell>
-                                    {item.productSnapshot?.code ?? item.product?.code ?? '—'}
-                                </TableCell>
-                                <TableCell align="right">{item.count}</TableCell>
-                                <TableCell align="right">{item.price}</TableCell>
-                            </TableRow>
-                        ))}
+                        {order.items.map((item) => {
+                            const unitPrice = item.price ?? 0;
+                            const lineTotal = unitPrice * item.count;
+
+                            return (
+                                <TableRow key={item.id}>
+                                    <TableCell>
+                                        {item.productSnapshot?.title ?? item.product?.title ?? '—'}
+                                    </TableCell>
+                                    <TableCell>
+                                        {item.productSnapshot?.code ?? item.product?.code ?? '—'}
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        {unitPrice > 0 ? unitPrice.toFixed(2) : '—'}
+                                    </TableCell>
+                                    <TableCell align="right">{item.count}</TableCell>
+                                    <TableCell align="right">
+                                        {lineTotal > 0 ? lineTotal.toFixed(2) : '—'}
+                                    </TableCell>
+                                </TableRow>
+                            );
+                        })}
                     </TableBody>
                 </Table>
             </TableContainer>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+                <Typography variant="h6">Order total: {orderTotal.toFixed(2)}</Typography>
+            </Box>
             <ConfirmationModal
                 open={deleteModalOpen}
                 onClose={() => setDeleteModalOpen(false)}
