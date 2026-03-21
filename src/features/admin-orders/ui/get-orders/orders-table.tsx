@@ -12,7 +12,7 @@ import {
     Typography,
 } from '@mui/material';
 import { useNavigate } from '@tanstack/react-router';
-import { ChangeEvent, FC, MouseEvent } from 'react';
+import { ChangeEvent, FC, MouseEvent, useCallback } from 'react';
 import { GetOrdersApiResponse } from '~entities/order';
 import { defaultRowsPerPageOptions } from '~shared/constants';
 import { NoData } from '~shared/ui/components';
@@ -39,6 +39,16 @@ export const OrdersTable: FC<IProps> = ({
 }) => {
     const { items, meta } = data;
     const navigate = useNavigate();
+    const handlePageChange = useCallback(
+        (
+            event: MouseEvent<HTMLElement> | MouseEvent<HTMLButtonElement, MouseEvent> | null,
+            newPage: number,
+        ) => {
+            onPageChange(event, newPage);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        },
+        [onPageChange],
+    );
 
     return (
         <Paper sx={{ width: '100%', overflow: 'hidden', opacity: isDisabled ? 0.7 : 1 }}>
@@ -108,7 +118,7 @@ export const OrdersTable: FC<IProps> = ({
                         count={meta.totalItems}
                         page={page}
                         rowsPerPage={meta.itemsPerPage}
-                        onPageChange={onPageChange}
+                        onPageChange={handlePageChange}
                         rowsPerPageOptions={defaultRowsPerPageOptions}
                         onRowsPerPageChange={onRowsPerPageChange}
                     />

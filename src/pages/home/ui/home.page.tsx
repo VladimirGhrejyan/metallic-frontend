@@ -33,6 +33,7 @@ export const HomePage = () => {
             newPage: number,
         ) => {
             navigate({ search: (prev) => ({ ...prev, page: newPage + 1 }) });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         },
         [navigate],
     );

@@ -50,6 +50,16 @@ export const ProductsTable: FC<IProps> = ({
     const [deletionId, setDeletionId] = useState<number | null>(null);
 
     const [deleteProduct, { isLoading }] = useDeleteProductMutation();
+    const handlePageChange = useCallback(
+        (
+            event: MouseEvent<HTMLElement> | MouseEvent<HTMLButtonElement, MouseEvent> | null,
+            newPage: number,
+        ) => {
+            onPageChange(event, newPage);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        },
+        [onPageChange],
+    );
 
     const deletionAction = useCallback(
         async (id: number) => {
@@ -176,7 +186,7 @@ export const ProductsTable: FC<IProps> = ({
                         count={meta.totalItems}
                         page={page}
                         rowsPerPage={meta.itemsPerPage}
-                        onPageChange={onPageChange}
+                        onPageChange={handlePageChange}
                         rowsPerPageOptions={rowsPerPageOptions}
                         onRowsPerPageChange={onRowsPerPageChange}
                     />
