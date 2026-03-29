@@ -14,6 +14,8 @@ interface ProductCardProps {
 export const ProductCard: React.FC<ProductCardProps> = ({ product, actions, imageLink }) => {
     const productImageUrl = product.image?.url || 'src/shared/assets/placeholder.png';
     const totalPrice = calculateTotalPrice(product.costPrice, product.markup);
+    const quantityAvailable =
+        typeof product.quantityAvailable === 'number' ? product.quantityAvailable : null;
 
     const mediaSx = {
         height: 160,
@@ -31,18 +33,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, actions, imag
             variant="outlined"
             sx={(theme) => ({
                 height: '100%',
-                minHeight: 320,
-                [theme.breakpoints.up('sm')]: { minHeight: 380 },
+                minHeight: 300,
+                [theme.breakpoints.up('sm')]: { minHeight: 360 },
                 display: 'flex',
                 flexDirection: 'column',
                 borderRadius: 2,
-                boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
                 border: '1px solid',
                 borderColor: 'divider',
                 overflow: 'hidden',
                 transition: 'box-shadow 0.2s ease, border-color 0.2s ease',
                 '&:hover': {
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                    boxShadow: theme.shadows[4],
                     borderColor: 'primary.light',
                 },
             })}
@@ -64,8 +66,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, actions, imag
                     display: 'flex',
                     flexDirection: 'column',
                     py: 2,
-                    px: 2,
+                    px: { xs: 1.5, sm: 2 },
                     '&:last-child': { pb: 2 },
+                    minWidth: 0,
                 }}
             >
                 <Typography
@@ -91,14 +94,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, actions, imag
                 >
                     {product.title}
                 </Typography>
-                <Typography variant="caption" color="text.secondary" sx={{ mb: 0.5 }}>
+                <Typography variant="caption" color="text.secondary" sx={{ mb: 0.25 }}>
                     {product.code}
                 </Typography>
+                {quantityAvailable != null ? (
+                    <Typography variant="caption" color="text.secondary" sx={{ mb: 0.75 }}>
+                        available: {quantityAvailable}
+                    </Typography>
+                ) : null}
                 <Typography
-                    variant="body1"
+                    variant="h6"
+                    component="p"
                     fontWeight={600}
                     color="primary.main"
-                    sx={{ mt: 'auto', pt: 1 }}
+                    sx={{ mt: 'auto', pt: 1, lineHeight: 1.2 }}
                 >
                     {totalPrice}
                 </Typography>

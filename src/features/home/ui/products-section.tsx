@@ -13,7 +13,10 @@ export const ProductsSection = ({ data }: IProps) => {
         <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={4}>
                 {data.map((product) => (
-                    <Grid key={product.code} size={{ xs: 12, sm: 4, md: 4, lg: 3, xl: 4 }}>
+                    <Grid
+                        key={product.code}
+                        size={{ xs: 12, sm: 4, md: 4, lg: 3, xl: 4 }}
+                    >
                         <ProductCard
                             product={product}
                             imageLink={`/admin/products/${product.id}/edit`}
