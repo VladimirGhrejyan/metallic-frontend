@@ -67,6 +67,10 @@ export const ProductsFilters: FC<IProps> = ({ onFiltersSubmit, onResetFilters, d
                 />
                 <AutocompleteController
                     options={[
+                        {
+                            title: 'Category Code',
+                            id: 'categoryTitle',
+                        },
                         { title: 'Title', id: 'title' },
                         { title: 'Code', id: 'code' },
                         { title: 'Category Id', id: 'categoryId' },
