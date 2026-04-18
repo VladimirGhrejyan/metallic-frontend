@@ -5,12 +5,21 @@ import { cleanedObject } from '~shared/helpers';
 
 import { authenticatedLayoutRoute } from '../authenticated.route';
 
+const HOME_PRODUCTS_DEFAULT_SORT: Pick<IProductsQueryArgs, 'sortBy' | 'order'> = {
+    sortBy: 'categoryTitle',
+    order: 'ASC',
+};
+
 export const homeRoute = createRoute({
     getParentRoute: () => authenticatedLayoutRoute,
     path: '/',
     component: lazyRouteComponent(() => import('~pages/home'), 'HomePage'),
     validateSearch: (search: IProductsQueryArgs): IProductsQueryArgs => {
-        return { ...search };
+        return {
+            ...search,
+            sortBy: search.sortBy ?? HOME_PRODUCTS_DEFAULT_SORT.sortBy,
+            order: search.order ?? HOME_PRODUCTS_DEFAULT_SORT.order,
+        };
     },
     search: {
         middlewares: [

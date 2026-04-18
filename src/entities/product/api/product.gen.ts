@@ -78,7 +78,14 @@ export type GetProductsApiResponse = /** status 200  */ GetAllProductsOutputDto;
 export type GetProductsApiArg = {
     search?: string;
     order?: 'ASC' | 'DESC';
-    sortBy?: 'title' | 'code' | 'costPrice' | 'categoryId' | 'createdAt' | 'updatedAt';
+    sortBy?:
+        | 'title'
+        | 'code'
+        | 'costPrice'
+        | 'categoryId'
+        | 'createdAt'
+        | 'updatedAt'
+        | 'categoryTitle';
     categoryId?: string;
     page?: string;
     itemsPerPage?: string;
