@@ -15,6 +15,7 @@ const injectedRtkApi = api
                         order: queryArg.order,
                         sortBy: queryArg.sortBy,
                         categoryId: queryArg.categoryId,
+                        excludeOutOfStock: queryArg.excludeOutOfStock,
                         page: queryArg.page,
                         itemsPerPage: queryArg.itemsPerPage,
                     },
@@ -87,6 +88,7 @@ export type GetProductsApiArg = {
         | 'updatedAt'
         | 'categoryTitle';
     categoryId?: string;
+    excludeOutOfStock?: string;
     page?: string;
     itemsPerPage?: string;
 };

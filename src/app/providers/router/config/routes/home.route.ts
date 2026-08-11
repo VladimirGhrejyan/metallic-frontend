@@ -1,14 +1,13 @@
 import { createRoute, lazyRouteComponent } from '@tanstack/react-router';
 import { IProductsQueryArgs } from '~pages/admin-products/model/get-products/admin-products.types';
+import {
+    HOME_PRODUCTS_DEFAULT_SORT,
+    normalizeExcludeOutOfStock,
+} from '~pages/admin-products/model/get-products/products-query.defaults';
 import { rowsPerPageMaxOption } from '~shared/constants';
 import { cleanedObject } from '~shared/helpers';
 
 import { authenticatedLayoutRoute } from '../authenticated.route';
-
-const HOME_PRODUCTS_DEFAULT_SORT: Pick<IProductsQueryArgs, 'sortBy' | 'order'> = {
-    sortBy: 'categoryTitle',
-    order: 'ASC',
-};
 
 export const homeRoute = createRoute({
     getParentRoute: () => authenticatedLayoutRoute,
@@ -19,6 +18,7 @@ export const homeRoute = createRoute({
             ...search,
             sortBy: search.sortBy ?? HOME_PRODUCTS_DEFAULT_SORT.sortBy,
             order: search.order ?? HOME_PRODUCTS_DEFAULT_SORT.order,
+            excludeOutOfStock: normalizeExcludeOutOfStock(search.excludeOutOfStock),
         };
     },
     search: {

@@ -6,6 +6,10 @@ import { useGetProductsQuery } from '~entities/product';
 import { ProductsFilters } from '~features/admin-products';
 import { ProductsSection } from '~features/home';
 import { IProductsQueryArgs } from '~pages/admin-products/model/get-products/admin-products.types';
+import {
+    DEFAULT_EXCLUDE_OUT_OF_STOCK,
+    HOME_PRODUCTS_DEFAULT_SORT,
+} from '~pages/admin-products/model/get-products/products-query.defaults';
 import { defaultRowsPerPageOptions, minimumPage } from '~shared/constants';
 import { cleanedObject, stringifyObject } from '~shared/helpers';
 import { Loader, PageHeader } from '~shared/ui/components';
@@ -52,7 +56,12 @@ export const HomePage = () => {
     );
 
     const onFiltersSubmit = useCallback(
-        (values: Pick<IProductsQueryArgs, 'categoryId' | 'sortBy' | 'order'>) => {
+        (
+            values: Pick<
+                IProductsQueryArgs,
+                'categoryId' | 'sortBy' | 'order' | 'excludeOutOfStock'
+            >,
+        ) => {
             navigate({ search: (prev) => ({ ...prev, ...values, page: minimumPage }) });
         },
         [navigate],
@@ -60,12 +69,27 @@ export const HomePage = () => {
 
     const onResetFilters = useCallback(() => {
         navigate({
-            search: (prev: IProductsQueryArgs) => {
-                const { categoryId, order, sortBy, ...rest } = prev;
-                return rest;
+            search: (prev) => {
+                const { categoryId, order, sortBy, excludeOutOfStock, ...rest } =
+                    prev as IProductsQueryArgs;
+
+                return {
+                    ...rest,
+                    ...HOME_PRODUCTS_DEFAULT_SORT,
+                    excludeOutOfStock: DEFAULT_EXCLUDE_OUT_OF_STOCK,
+                    page: minimumPage,
+                };
             },
         });
     }, [navigate]);
+
+    const resetFilterValues = useMemo(
+        () => ({
+            ...HOME_PRODUCTS_DEFAULT_SORT,
+            excludeOutOfStock: DEFAULT_EXCLUDE_OUT_OF_STOCK,
+        }),
+        [],
+    );
 
     const memoizedDefaultFilters: Omit<IProductsQueryArgs, 'itemsPerPage' | 'page' | 'search'> =
         useMemo(() => {
@@ -107,6 +131,7 @@ export const HomePage = () => {
                 <FiltersPopover>
                     <ProductsFilters
                         defaultValues={memoizedDefaultFilters}
+                        resetFilterValues={resetFilterValues}
                         onFiltersSubmit={onFiltersSubmit}
                         onResetFilters={onResetFilters}
                     />
