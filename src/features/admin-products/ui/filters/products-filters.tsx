@@ -1,42 +1,61 @@
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Checkbox, FormControlLabel, Typography } from '@mui/material';
 import { FC } from 'react';
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { useGetProductCategoriesQuery } from '~entities/product-category';
 import { TProductsFiltersFormValues } from '~features/admin-products/model/filters/form.types';
 import { IProductsQueryArgs } from '~pages/admin-products/model/get-products/admin-products.types';
+import { isExcludeOutOfStockEnabled } from '~pages/admin-products/model/get-products/products-query.defaults';
 import { AutocompleteController } from '~shared/ui/controllers/input-controller/autocomplete-controller';
 
 interface IProps {
     defaultValues: Omit<IProductsQueryArgs, 'itemsPerPage' | 'page' | 'search'>;
-    onFiltersSubmit: (values: Pick<IProductsQueryArgs, 'categoryId' | 'sortBy' | 'order'>) => void;
+    resetFilterValues: Omit<IProductsQueryArgs, 'itemsPerPage' | 'page' | 'search'>;
+    onFiltersSubmit: (
+        values: Pick<IProductsQueryArgs, 'categoryId' | 'sortBy' | 'order' | 'excludeOutOfStock'>,
+    ) => void;
     onResetFilters: () => void;
 }
 
-export const ProductsFilters: FC<IProps> = ({ onFiltersSubmit, onResetFilters, defaultValues }) => {
+export const ProductsFilters: FC<IProps> = ({
+    onFiltersSubmit,
+    onResetFilters,
+    defaultValues,
+    resetFilterValues,
+}) => {
     const form = useForm<TProductsFiltersFormValues>({
         defaultValues: {
             categoryId: defaultValues.categoryId,
             order: defaultValues.order,
             sortBy: defaultValues.sortBy,
+            excludeOutOfStock: isExcludeOutOfStockEnabled(defaultValues.excludeOutOfStock),
         },
     });
 
     const { data, isLoading } = useGetProductCategoriesQuery({ order: 'ASC', sortBy: 'code' });
 
     const onSubmit: SubmitHandler<TProductsFiltersFormValues> = (formValues) => {
-        const { categoryId, order, sortBy } = formValues;
+        const { categoryId, order, sortBy, excludeOutOfStock } = formValues;
 
-        const filteredValues: Pick<IProductsQueryArgs, 'categoryId' | 'sortBy' | 'order'> = {
+        const filteredValues: Pick<
+            IProductsQueryArgs,
+            'categoryId' | 'sortBy' | 'order' | 'excludeOutOfStock'
+        > = {
             ...(categoryId !== undefined && { categoryId }),
             ...(order !== undefined && { order }),
             ...(sortBy !== undefined && { sortBy }),
+            excludeOutOfStock: excludeOutOfStock ? 'true' : 'false',
         };
 
         onFiltersSubmit(filteredValues);
     };
 
     const onReset = () => {
-        form.reset();
+        form.reset({
+            categoryId: resetFilterValues.categoryId,
+            order: resetFilterValues.order,
+            sortBy: resetFilterValues.sortBy,
+            excludeOutOfStock: isExcludeOutOfStockEnabled(resetFilterValues.excludeOutOfStock),
+        });
         onResetFilters();
     };
 
@@ -82,6 +101,22 @@ export const ProductsFilters: FC<IProps> = ({ onFiltersSubmit, onResetFilters, d
                     name="sortBy"
                     label="Sort By"
                     placeholder="Sort By"
+                />
+                <Controller
+                    name="excludeOutOfStock"
+                    control={form.control}
+                    render={({ field }) => (
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    {...field}
+                                    checked={field.value}
+                                    onChange={(event) => field.onChange(event.target.checked)}
+                                />
+                            }
+                            label="Hide out of stock"
+                        />
+                    )}
                 />
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Button disabled={isLoading} variant="text" onClick={onReset}>

@@ -16,12 +16,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, actions, imag
     const totalPrice = calculateTotalPrice(product.costPrice, product.markup);
     const quantityAvailable =
         typeof product.quantityAvailable === 'number' ? product.quantityAvailable : null;
+    const isOutOfStock = quantityAvailable === 0;
 
     const mediaSx = {
         height: 160,
         width: '100%',
         objectFit: 'cover' as const,
-        bgcolor: 'grey.100',
+        bgcolor: isOutOfStock ? 'grey.200' : 'grey.100',
+        ...(isOutOfStock && { opacity: 0.55, filter: 'grayscale(0.35)' }),
     };
 
     const cardMedia = (
@@ -40,12 +42,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, actions, imag
                 borderRadius: 2,
                 boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
                 border: '1px solid',
-                borderColor: 'divider',
+                borderColor: isOutOfStock ? 'error.light' : 'divider',
+                bgcolor: isOutOfStock ? 'action.hover' : 'background.paper',
                 overflow: 'hidden',
                 transition: 'box-shadow 0.2s ease, border-color 0.2s ease',
                 '&:hover': {
                     boxShadow: theme.shadows[4],
-                    borderColor: 'primary.light',
+                    borderColor: isOutOfStock ? 'error.main' : 'primary.light',
                 },
             })}
         >
@@ -74,7 +77,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, actions, imag
                 <Typography
                     variant="subtitle1"
                     fontWeight={600}
-                    color="text.primary"
+                    color={isOutOfStock ? 'text.secondary' : 'text.primary'}
                     sx={(theme) => ({
                         overflow: 'hidden',
                         display: '-webkit-box',
@@ -98,15 +101,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, actions, imag
                     {product.code}
                 </Typography>
                 {quantityAvailable != null ? (
-                    <Typography variant="caption" color="text.secondary" sx={{ mb: 0.75 }}>
-                        available: {quantityAvailable}
+                    <Typography
+                        variant="caption"
+                        color={isOutOfStock ? 'error.main' : 'text.secondary'}
+                        fontWeight={isOutOfStock ? 600 : 400}
+                        sx={{ mb: 0.75 }}
+                    >
+                        {isOutOfStock ? 'Out of stock' : `available: ${quantityAvailable}`}
                     </Typography>
                 ) : null}
                 <Typography
                     variant="h6"
                     component="p"
                     fontWeight={600}
-                    color="primary.main"
+                    color={isOutOfStock ? 'text.disabled' : 'primary.main'}
                     sx={{ mt: 'auto', pt: 1, lineHeight: 1.2 }}
                 >
                     {totalPrice}

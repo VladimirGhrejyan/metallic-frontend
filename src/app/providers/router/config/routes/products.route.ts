@@ -1,5 +1,6 @@
 import { createRoute, lazyRouteComponent } from '@tanstack/react-router';
 import { IProductsQueryArgs } from '~pages/admin-products/model/get-products/admin-products.types';
+import { normalizeExcludeOutOfStock } from '~pages/admin-products/model/get-products/products-query.defaults';
 import { rowsPerPageMaxOption } from '~shared/constants';
 import { cleanedObject } from '~shared/helpers';
 
@@ -10,7 +11,10 @@ export const productsRoute = createRoute({
     path: '/products',
     component: lazyRouteComponent(() => import('~pages/admin-products'), 'GetProductsPage'),
     validateSearch: (search: IProductsQueryArgs): IProductsQueryArgs => {
-        return { ...search };
+        return {
+            ...search,
+            excludeOutOfStock: normalizeExcludeOutOfStock(search.excludeOutOfStock),
+        };
     },
     search: {
         middlewares: [

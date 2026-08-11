@@ -4,4 +4,5 @@ export type TProductsFiltersFormValues = {
     categoryId: string | undefined;
     order: GetProductsApiArg['order'];
     sortBy: GetProductsApiArg['sortBy'];
+    excludeOutOfStock: boolean;
 };
