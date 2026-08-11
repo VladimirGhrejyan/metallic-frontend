@@ -6,6 +6,7 @@ import { productsRoute } from '~app/providers/router/config/routes';
 import { useGetProductsQuery } from '~entities/product';
 import { BulkUpdate, ProductsFilters, ProductsTable } from '~features/admin-products';
 import { IProductsQueryArgs } from '~pages/admin-products/model/get-products/admin-products.types';
+import { DEFAULT_EXCLUDE_OUT_OF_STOCK } from '~pages/admin-products/model/get-products/products-query.defaults';
 import { minimumPage } from '~shared/constants';
 import { cleanedObject, stringifyObject } from '~shared/helpers';
 import { Loader, PageHeader } from '~shared/ui/components';
@@ -51,7 +52,12 @@ export const GetProductsPage = () => {
     );
 
     const onFiltersSubmit = useCallback(
-        (values: Pick<IProductsQueryArgs, 'categoryId' | 'sortBy' | 'order'>) => {
+        (
+            values: Pick<
+                IProductsQueryArgs,
+                'categoryId' | 'sortBy' | 'order' | 'excludeOutOfStock'
+            >,
+        ) => {
             navigate({ search: (prev) => ({ ...prev, ...values, page: minimumPage }) });
         },
         [navigate],
@@ -60,11 +66,24 @@ export const GetProductsPage = () => {
     const onResetFilters = useCallback(() => {
         navigate({
             search: (prev) => {
-                const { categoryId, order, sortBy, ...rest } = prev;
-                return rest;
+                const { categoryId, order, sortBy, excludeOutOfStock, ...rest } =
+                    prev as IProductsQueryArgs;
+
+                return {
+                    ...rest,
+                    excludeOutOfStock: DEFAULT_EXCLUDE_OUT_OF_STOCK,
+                    page: minimumPage,
+                };
             },
         });
     }, [navigate]);
+
+    const resetFilterValues = useMemo(
+        () => ({
+            excludeOutOfStock: DEFAULT_EXCLUDE_OUT_OF_STOCK,
+        }),
+        [],
+    );
 
     const memoizedDefaultFilters: Omit<IProductsQueryArgs, 'itemsPerPage' | 'page' | 'search'> =
         useMemo(() => {
@@ -104,6 +123,7 @@ export const GetProductsPage = () => {
                 <FiltersPopover>
                     <ProductsFilters
                         defaultValues={memoizedDefaultFilters}
+                        resetFilterValues={resetFilterValues}
                         onFiltersSubmit={onFiltersSubmit}
                         onResetFilters={onResetFilters}
                     />
